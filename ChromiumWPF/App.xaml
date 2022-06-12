@@ -1,0 +1,27 @@
+﻿<Application x:Class="ChromiumWPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ChromiumWPF"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Colors -->
+        <SolidColorBrush x:Key="wbBackground" Color="#222831" />
+        <SolidColorBrush x:Key="wbSecondaryBack" Color="#393e46" />
+        <SolidColorBrush x:Key="wbYellow" Color="#ffd369" />
+        <SolidColorBrush x:Key="wbGrey" Color="#eeeeee" />
+        <SolidColorBrush x:Key="wbText" Color="#474747" />
+
+        <!-- Custon elements -->
+        <Style x:Key="wbMenuItem" TargetType="MenuItem" >
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Padding" Value="5,5,5,5" />
+            <Setter Property="Foreground" Value="{StaticResource wbGrey}" />
+        </Style>
+
+        <Style x:Key="wbSubMenuItem" TargetType="MenuItem" >
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Padding" Value="5,5,5,5" />
+            <Setter Property="Foreground" Value="{StaticResource wbText}" />
+        </Style>
+    </Application.Resources>
+</Application>
