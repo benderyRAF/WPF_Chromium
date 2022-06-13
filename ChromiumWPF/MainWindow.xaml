@@ -14,50 +14,19 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <!-- Top Menu -->
-        <Menu Height="25" VerticalAlignment="Top" Background="{DynamicResource wbSecondaryBack}" ItemContainerStyle="{StaticResource wbMenuItem}">
-            <MenuItem Header="File" Foreground="{DynamicResource wbGrey}" ItemContainerStyle="{StaticResource wbSubMenuItem}">
-                <MenuItem x:Name="newTabMenuItem" Header="New Tab" Click="newTabMenuItem_Click"/>
-                <Separator/>
-                <MenuItem x:Name="SettingsMenuItem" Header="Settings" Click="SettingsMenuItem_Click"/>
-            </MenuItem>
-        </Menu>
+        <Grid Grid.Row="0" HorizontalAlignment="Center">
+            <TextBlock FontSize="30" VerticalAlignment="Center" Foreground="White">GIS</TextBlock>
+        </Grid>
         
-        <!-- AddressBar -->
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="300"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
-            <!-- Nav Buttons -->
-            <StackPanel Orientation="Horizontal" Height="32" Margin="10,0">
-                <Button x:Name="backButton" Width="32" Margin="0,0,10,0" BorderThickness="0" Click="backButton_Click" Background="{x:Null}">
-                    <Viewbox Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="/Images/Back.png"/>
-                    </Viewbox>
-                </Button>
-                <Button x:Name="forwardButton" Width="32" Margin="0,0,10,0" BorderThickness="0" Click="forwardButton_Click" Background="{x:Null}">
-                    <Viewbox Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="/Images/Forward.png"/>
-                    </Viewbox>
-                </Button>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="AutoCheckButton" Click="AutoCheckButtonClick" Width="75" Height="25" Margin="5, 0, 0, 0" Background="Lime">Auto check</Button>
+                <Button x:Name="OnOffLineButton" Click="ChangeConnection" Width="25" Height="25" Margin="25, 0, 0, 0" Background="Gray"></Button>
+                <TextBlock x:Name="OnOffLineText" FontSize="25" VerticalAlignment="Center" Margin="5, 0, 0, 0" Foreground="LightGreen">Online</TextBlock>
             </StackPanel>
-
-            <Button x:Name="refreshButton" Width="32" Height="32" Margin="0,0,10,0" HorizontalAlignment="Right" BorderThickness="0" Click="refreshButton_Click" Background="{x:Null}">
-                <Viewbox Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Images/Refresh.png"/>
-                </Viewbox>
-            </Button>
-
-            <!-- Address Bar -->
-            <TextBox x:Name="AddressBar" Grid.Column="1" Height="25" VerticalAlignment="Center" VerticalContentAlignment="Center" TextWrapping="NoWrap" KeyDown="AddressBar_KeyDown"/>
         </Grid>
         
         <!-- Tab Control -->
-        <TabControl x:Name="tabControl" Grid.Row="2" BorderThickness="0" SelectionChanged="tabControl_SelectionChanged" Padding="0">
-            <!-- Pages goes here -->
-        </TabControl>
+        <TabControl x:Name="tabControl" Grid.Row="2" BorderThickness="0" SelectionChanged="TabControl_SelectionChanged" Padding="0"></TabControl>
     </Grid>
 </Window>
