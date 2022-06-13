@@ -57,9 +57,7 @@
         
         <!-- Tab Control -->
         <TabControl x:Name="tabControl" Grid.Row="2" BorderThickness="0" SelectionChanged="tabControl_SelectionChanged" Padding="0">
-            <TabItem Header="Blank page" BorderThickness="0">
-                <cefSharp:ChromiumWebBrowser x:Name="defaultBrowser" Address="htttps://www.google.com" />
-            </TabItem>
+            <!-- Pages goes here -->
         </TabControl>
     </Grid>
 </Window>
