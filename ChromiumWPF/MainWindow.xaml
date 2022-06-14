@@ -17,16 +17,12 @@
         <Grid Grid.Row="0" HorizontalAlignment="Center">
             <TextBlock FontSize="30" VerticalAlignment="Center" Foreground="White">GIS</TextBlock>
         </Grid>
-        
-        <Grid Grid.Row="1">
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="AutoCheckButton" Click="AutoCheckButtonClick" Width="75" Height="25" Margin="5, 0, 0, 0" Background="Lime">Auto check</Button>
-                <Button x:Name="OnOffLineButton" Click="ChangeConnection" Width="25" Height="25" Margin="25, 0, 0, 0" Background="Gray"></Button>
-                <TextBlock x:Name="OnOffLineText" FontSize="25" VerticalAlignment="Center" Margin="5, 0, 0, 0" Foreground="LightGreen">Online</TextBlock>
-            </StackPanel>
-        </Grid>
-        
+
         <!-- Tab Control -->
-        <TabControl x:Name="tabControl" Grid.Row="2" BorderThickness="0" SelectionChanged="TabControl_SelectionChanged" Padding="0"></TabControl>
+        <TabControl x:Name="tabControl" Grid.Row="2" BorderThickness="0" Padding="0">
+            <TabItem Header="New page!" BorderThickness="0">
+                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="file:///C:/Users/SHONDIM/Desktop/Localhost.html" />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
