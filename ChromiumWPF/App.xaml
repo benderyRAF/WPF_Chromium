@@ -7,6 +7,6 @@
         
         <!-- Colors -->
         <SolidColorBrush x:Key="wbBackground" Color="#222831" />
-        
+
     </Application.Resources>
 </Application>

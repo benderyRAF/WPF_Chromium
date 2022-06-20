@@ -18,10 +18,22 @@
             <TextBlock FontSize="30" VerticalAlignment="Center" Foreground="White">GIS</TextBlock>
         </Grid>
 
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="longitudeTextbox" FontSize="20" Width="150" Margin="5, 0" VerticalAlignment="Center" ToolTip="Longitude" />
+                <TextBox x:Name="latitudeTextbox" FontSize="20" Width="150" Margin="5, 0" VerticalAlignment="Center" ToolTip="Latitude" />
+                <TextBox x:Name="heightTextbox" FontSize="20" Width="150" Margin="5, 0" VerticalAlignment="Center" ToolTip="Height" />
+                <Button Width="30" Margin="10, 0, 0, 0" Background="Lime" Click="SetValues"></Button>
+            </StackPanel>
+        </Grid>
+        
         <!-- Tab Control -->
         <TabControl x:Name="tabControl" Grid.Row="2" BorderThickness="0" Padding="0">
+            <!--<TabItem Header="New page!" BorderThickness="0">
+                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="file:///C:/Users/SHONDIM/Desktop/Cesium/3d-offline-map/index.html" />
+            </TabItem>-->
             <TabItem Header="New page!" BorderThickness="0">
-                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="file:///C:/Users/SHONDIM/Desktop/Localhost.html" />
+                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="C:\Users\SHONDIM\Desktop\Localhost.html" />
             </TabItem>
         </TabControl>
     </Grid>

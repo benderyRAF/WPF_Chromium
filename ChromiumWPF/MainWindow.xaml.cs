@@ -28,8 +28,20 @@ namespace ChromiumWPF {
 
             InitializeComponent();
 
-            defaultBrowser.BrowserSettings.DefaultEncoding = "UTF - 8";
-            defaultBrowser.BrowserSettings.WebGl = CefState.Disabled;
+        }
+
+        private void SetValues(object sender, RoutedEventArgs e) {
+
+            //string EvaluateJavaScriptResult;
+            var frame = defaultBrowser.GetMainFrame();
+            var task = frame.EvaluateScriptAsync($"(setValues({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();", null);
+
+            task.ContinueWith(t => {
+                if (!t.IsFaulted) {
+                    var response = t.Result;
+                    //EvaluateJavaScriptResult = response.Success ? (response.Result.ToString() ?? "null") : response.Message;
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
 
         }
 
