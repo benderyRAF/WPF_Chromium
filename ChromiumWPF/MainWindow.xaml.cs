@@ -34,7 +34,7 @@ namespace ChromiumWPF {
 
             //string EvaluateJavaScriptResult;
             var frame = defaultBrowser.GetMainFrame();
-            var task = frame.EvaluateScriptAsync($"(setValues({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();", null);
+            var task = frame.EvaluateScriptAsync($"(addPoint({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();", null);
 
             task.ContinueWith(t => {
                 if (!t.IsFaulted) {

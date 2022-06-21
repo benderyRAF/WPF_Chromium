@@ -33,7 +33,7 @@
                 <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="file:///C:/Users/SHONDIM/Desktop/Cesium/3d-offline-map/index.html" />
             </TabItem>-->
             <TabItem Header="New page!" BorderThickness="0">
-                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="C:\Users\SHONDIM\Desktop\Localhost.html" />
+                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="localhost:5500/index.html" />
             </TabItem>
         </TabControl>
     </Grid>
