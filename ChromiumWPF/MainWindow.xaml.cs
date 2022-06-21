@@ -31,17 +31,17 @@ namespace ChromiumWPF {
         }
 
         private void SetValues(object sender, RoutedEventArgs e) {
+            JsCall($"(addPoint({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();");
+        }
 
-            //string EvaluateJavaScriptResult;
+        private void ClearPoints(object sender, RoutedEventArgs e) {
+            JsCall("(clearPoints())();");
+        }
+
+        private void JsCall(string command) {
+
             var frame = defaultBrowser.GetMainFrame();
-            var task = frame.EvaluateScriptAsync($"(addPoint({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();", null);
-
-            task.ContinueWith(t => {
-                if (!t.IsFaulted) {
-                    var response = t.Result;
-                    //EvaluateJavaScriptResult = response.Success ? (response.Result.ToString() ?? "null") : response.Message;
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            frame.EvaluateScriptAsync(command, null);
 
         }
 

@@ -9,32 +9,20 @@
         Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
     <Grid Background="{DynamicResource wbBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="menuBarRow" Height="25" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" HorizontalAlignment="Center">
-            <TextBlock FontSize="30" VerticalAlignment="Center" Foreground="White">GIS</TextBlock>
-        </Grid>
-
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="longitudeTextbox" FontSize="20" Width="150" Margin="5, 0" VerticalAlignment="Center" ToolTip="Longitude" />
-                <TextBox x:Name="latitudeTextbox" FontSize="20" Width="150" Margin="5, 0" VerticalAlignment="Center" ToolTip="Latitude" />
-                <TextBox x:Name="heightTextbox" FontSize="20" Width="150" Margin="5, 0" VerticalAlignment="Center" ToolTip="Height" />
-                <Button Width="30" Margin="10, 0, 0, 0" Background="Lime" Click="SetValues"></Button>
+                <TextBox x:Name="longitudeTextbox" FontSize="20" Width="300" Margin="5" VerticalAlignment="Center" ToolTip="Longitude">35.04592791446208</TextBox>
+                <TextBox x:Name="latitudeTextbox" FontSize="20" Width="300" Margin="5" VerticalAlignment="Center" ToolTip="Latitude">31.48658108795938</TextBox>
+                <TextBox x:Name="heightTextbox" FontSize="20" Width="100" Margin="5" VerticalAlignment="Center" ToolTip="Height">5000</TextBox>
+                <Button Width="100" Height="30" Margin="10, 0, 0, 0" Background="Lime" Click="SetValues">Add point</Button>
+                <Button Width="100" Height="30" Margin="10, 0, 0, 0" Background="Red" Click="ClearPoints">Clear points</Button>
             </StackPanel>
         </Grid>
-        
-        <!-- Tab Control -->
-        <TabControl x:Name="tabControl" Grid.Row="2" BorderThickness="0" Padding="0">
-            <!--<TabItem Header="New page!" BorderThickness="0">
-                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="file:///C:/Users/SHONDIM/Desktop/Cesium/3d-offline-map/index.html" />
-            </TabItem>-->
-            <TabItem Header="New page!" BorderThickness="0">
-                <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="localhost:5500/index.html" />
-            </TabItem>
-        </TabControl>
+
+        <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Grid.Row="1" Address="localhost:5500/index.html" />
     </Grid>
 </Window>
