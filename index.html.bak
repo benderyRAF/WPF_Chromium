@@ -73,17 +73,11 @@
       //    color : Cesium.Color.CYAN,
       //});
     }, false);
+  
+   function addPoint(a, b, c){
     Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
       var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
-      
-    function clearPoints()
-    {
-     points.removeAll(); 
-    }
-   function addPoint(a, b, c){
-  //  Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
-    //  var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
-    var p = points.add({
+    points.add({
           position : Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
             parseFloat(a), parseFloat(b), parseFloat(c), new Cesium.Cartographic()), ellipsoid),
           color : Cesium.Color.CYAN,
