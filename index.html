@@ -73,22 +73,46 @@
       //    color : Cesium.Color.CYAN,
       //});
     }, false);
-    Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
-      var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
-      
+    //Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
+    var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
+    
+    //function will remove all the points
     function clearPoints()
     {
      points.removeAll(); 
     }
-   function addPoint(a, b, c){
-  //  Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
-    //  var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
-    var p = points.add({
-          position : Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
-            parseFloat(a), parseFloat(b), parseFloat(c), new Cesium.Cartographic()), ellipsoid),
-          color : Cesium.Color.CYAN,
+
+    //function gets x,y,z and places a point there
+    function addPoint(x, y, z)
+    {
+      //creates and adds point to scene
+      var p = points.add({
+        position : Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
+        parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid),
+        color : Cesium.Color.CYAN
       });
+    }
+
+  //gets x,y of start and x,y of dest and width
+  function addLine(s1, s2, d1, d2, width)
+  {
+    //creates line variable
+    var line = new Cesium.GeometryInstance({
+    geometry : new Cesium.GroundPolylineGeometry({
+      positions : Cesium.Cartesian3.fromDegreesArray([
+      s1, s2,
+      d1, d2
+      ]),
+      width : width
+    })});
+    // adds line to scene
+    scene.groundPrimitives.add(new Cesium.GroundPolylinePrimitive({
+    geometryInstances : line,
+    allowPicking: true,
+    appearance : new Cesium.PolylineMaterialAppearance()
+    }));
   }
+
   </script>
 </body>
 </html>
