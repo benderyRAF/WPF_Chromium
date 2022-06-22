@@ -123,6 +123,8 @@
       destination : Cesium.Cartesian3.fromDegrees(x, y, z)
     });
   }
+  
+
 //gets cesium entities variable
 const viewer = ol3d.getDataSourceDisplay().defaultDataSource;
 const entities = viewer.entities;
@@ -144,6 +146,18 @@ function addPolygon(degarr, height) {
   });
 }
 
+//adds an image waypoint using given image url and given location
+function addImage(x,y,z,url)
+{
+  entities.add({
+    position: Cesium.Cartesian3.fromDegrees(x, y, z),
+    billboard: {
+      image: url,
+      height: 30,
+      width: 30
+    },
+  });
+}
 
 </script>
 </body>
