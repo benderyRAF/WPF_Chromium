@@ -49,10 +49,12 @@
       url : 'http://localhost:9002/tilesets/tiles'
     });
     scene.terrainProvider = terrainProvider;
-    
+    //enable 3d by default
+    ol3d.setEnabled(true);
     // change between 2d to 3d
     var setEnabled = function () {
         ol3d.setEnabled(!ol3d.getEnabled())
+        
     };
     document.getElementById('enable').addEventListener('click', setEnabled);
 
@@ -112,7 +114,12 @@
     appearance : new Cesium.PolylineMaterialAppearance()
     }));
   }
-
+  function moveTo(x,y,z) 
+  {
+    scene.camera.flyTo({
+      destination : Cesium.Cartesian3.fromDegrees(x, y, z)
+    });
+  }
   </script>
 </body>
 </html>
