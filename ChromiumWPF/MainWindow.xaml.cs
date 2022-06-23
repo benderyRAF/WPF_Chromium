@@ -130,11 +130,11 @@ namespace ChromiumWPF {
                     break;
 
                 case Action.AddImage:
-                    JsCall($"(addImage({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}, {urlTextbox.Text}))();");
+                    JsCall($"(addImage({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}, '{urlTextbox.Text}'))();");
                     break;
 
                 case Action.CreateModel:
-                    JsCall($"(createModel({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}, {urlTextbox.Text}))();");
+                    JsCall($"(createModel('{urlTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();");
                     break;
 
             }
