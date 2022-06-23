@@ -59,6 +59,8 @@ namespace ChromiumWPF {
             polygonStack.Visibility = Visibility.Collapsed;
             urlTextblock.Visibility = Visibility.Collapsed;
             urlTextbox.Visibility = Visibility.Collapsed;
+            heightTextbox.Tag = "LastInStack";
+            urlTextbox.Tag = "";
 
             switch (headerAction) {
 
@@ -86,7 +88,9 @@ namespace ChromiumWPF {
                     action = Action.AddImage;
                     pointStack.Visibility = Visibility.Visible;
                     urlTextblock.Visibility = Visibility.Visible;
-                    urlTextbox.Visibility = Visibility.Visible; 
+                    urlTextbox.Visibility = Visibility.Visible;
+                    heightTextbox.Tag = "";
+                    urlTextbox.Tag = "LastInStack";
                     break;
 
                 case "Create model":
@@ -94,6 +98,8 @@ namespace ChromiumWPF {
                     pointStack.Visibility = Visibility.Visible;
                     urlTextblock.Visibility = Visibility.Visible;
                     urlTextbox.Visibility = Visibility.Visible;
+                    heightTextbox.Tag = "";
+                    urlTextbox.Tag = "LastInStack";
                     break;
 
             }
@@ -121,12 +127,19 @@ namespace ChromiumWPF {
                     break;
 
                 case Action.AddPolygon:
+
                     string pointArray = "[";
                     points.ForEach(coordinate => {
                         pointArray += coordinate.Text;
                         pointArray += coordinate == points.Last() ? "]" : ",";
                     });
                     JsCall($"(addPolygon({pointArray}, {polygonHeightTextbox.Text}))();");
+
+                    for (int i = polygonStack.Children.Count - 1; i > 2; i--) {
+                        polygonStack.Children.RemoveAt(i);
+                    }
+                    points.Clear();
+
                     break;
 
                 case Action.AddImage:
@@ -139,6 +152,18 @@ namespace ChromiumWPF {
 
             }
 
+            foreach(UIElement element in actionStack.Children) {
+                if (element is StackPanel) {
+
+                    foreach (UIElement element2 in ((StackPanel)element).Children) {
+                        if (element2 is TextBox) {
+                            ((TextBox)element2).Text = "";
+                        }
+                    }
+
+                }
+            }
+
         }
 
         private void AddPointInput(object sender, RoutedEventArgs e) {
@@ -147,8 +172,17 @@ namespace ChromiumWPF {
             newTextBlock.Text = $"Point {points.Count / 2 + 1}";
             newTextBlock.FontSize = 15;
             newTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
             TextBox newTextBoxX = new TextBox();
             TextBox newTextBoxY = new TextBox();
+
+            newTextBoxX.KeyDown += NextField;
+            newTextBoxY.KeyDown += NextField;
+            newTextBoxY.Tag = "LastInStack";
+
+            if (polygonStack.Children[polygonStack.Children.Count - 1] is TextBox textBox) {
+                textBox.Tag = "";
+            }
 
             polygonStack.Children.Add(newTextBlock);
             polygonStack.Children.Add(newTextBoxX);
@@ -167,14 +201,18 @@ namespace ChromiumWPF {
                 StackPanel parent = (StackPanel)textBox.Parent;
 
                 int index = parent.Children.IndexOf(textBox);
-                index += parent.Children[index + 1] is TextBox ? 1 : 2;
+                string tag = ((TextBox)parent.Children[index]).Tag?.ToString();
 
-                if (index == parent.Children.Count - 1) {
+                if (tag == "LastInStack") {
                     Approve(null, null);
-                } else {
-                    parent.Children[index].Focus();
+                    return;
                 }
 
+                try {
+                    index += parent.Children[index + 1] is TextBox ? 1 : 2;
+                    parent.Children[index].Focus();
+                } catch { }
+                
             }
 
         }

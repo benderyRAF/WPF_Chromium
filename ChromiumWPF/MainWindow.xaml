@@ -40,7 +40,7 @@
                         <TextBlock FontSize="15" Foreground="White">Latitude</TextBlock>
                         <TextBox x:Name="latitudeTextbox" KeyDown="NextField"/>
                         <TextBlock FontSize="15" Foreground="White">Height</TextBlock>
-                        <TextBox x:Name="heightTextbox" KeyDown="NextField"/>
+                        <TextBox x:Name="heightTextbox" Tag="LastInStack" KeyDown="NextField"/>
                         <TextBlock x:Name="urlTextblock" FontSize="15" Foreground="White">Url</TextBlock>
                         <TextBox x:Name="urlTextbox" KeyDown="NextField"/>
                     </StackPanel>
@@ -53,7 +53,7 @@
                         <TextBox x:Name="dstPointXTextbox" KeyDown="NextField"/>
                         <TextBox x:Name="dstPointYTextbox" KeyDown="NextField"/>
                         <TextBlock FontSize="15" Foreground="White">Width</TextBlock>
-                        <TextBox x:Name="widthTextbox" KeyDown="NextField"/>
+                        <TextBox x:Name="widthTextbox" Tag="LastInStack" KeyDown="NextField"/>
                     </StackPanel>
                     
                     <StackPanel x:Name="polygonStack" Visibility="Collapsed">
