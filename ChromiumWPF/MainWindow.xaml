@@ -9,20 +9,58 @@
         Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
     <Grid Background="{DynamicResource wbBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="50" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="longitudeTextbox" FontSize="20" Width="300" Margin="5" VerticalAlignment="Center" ToolTip="Longitude">35.04592791446208</TextBox>
-                <TextBox x:Name="latitudeTextbox" FontSize="20" Width="300" Margin="5" VerticalAlignment="Center" ToolTip="Latitude">31.48658108795938</TextBox>
-                <TextBox x:Name="heightTextbox" FontSize="20" Width="100" Margin="5" VerticalAlignment="Center" ToolTip="Height">5000</TextBox>
-                <Button Width="100" Height="30" Margin="10, 0, 0, 0" Background="Lime" Click="SetValues">Add point</Button>
-                <Button Width="100" Height="30" Margin="10, 0, 0, 0" Background="Red" Click="ClearPoints">Clear points</Button>
-            </StackPanel>
+            <Menu Height="30" Margin="10" HorizontalAlignment="Left" Foreground="Black">
+                <MenuItem Header="Action" Width="100" Height="30" Background="Gray">
+                    <MenuItem Header="Set location" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add point" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add polyline" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add polygon" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add image" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Create model" Click="ChooseAction"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Mode switch" Width="100" Height="30" Background="Gray" Click="ModeSwitch"/>
+            </Menu>
         </Grid>
 
-        <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Grid.Row="1" Address="localhost:5500/index.html" />
+        <Grid Grid.Row="1">
+            <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="localhost:5500/index.html" />
+            <GroupBox Width="500" HorizontalAlignment="Right">
+                <StackPanel x:Name="actionStack" Visibility="Collapsed">
+                    <Label x:Name="actionLabel" FontSize="30" Foreground="White" HorizontalAlignment="Center"></Label>
+                    <StackPanel x:Name="pointStack" Visibility="Collapsed">
+                        <TextBlock FontSize="15" Foreground="White">Longitude</TextBlock>
+                        <TextBox x:Name="longitudeTextbox"/>
+                        <TextBlock FontSize="15" Foreground="White">Latitude</TextBlock>
+                        <TextBox x:Name="latitudeTextbox"/>
+                        <TextBlock FontSize="15" Foreground="White">Height</TextBlock>
+                        <TextBox x:Name="heightTextbox"/>
+                        <TextBlock x:Name="urlTextblock" FontSize="15" Foreground="White">Url</TextBlock>
+                        <TextBox x:Name="urlTextbox"/>
+                    </StackPanel>
+                    <StackPanel x:Name="lineStack" Visibility="Collapsed">
+                        <TextBlock FontSize="15" Foreground="White">Source point</TextBlock>
+                        <TextBox x:Name="srcPointXTextbox"/>
+                        <TextBox x:Name="srcPointYTextbox"/>
+                        <TextBlock FontSize="15" Foreground="White">Destination point</TextBlock>
+                        <TextBox x:Name="dstPointXTextbox"/>
+                        <TextBox x:Name="dstPointYTextbox"/>
+                        <TextBlock FontSize="15" Foreground="White">Width</TextBlock>
+                        <TextBox x:Name="widthTextbox"/>
+                    </StackPanel>
+                    <StackPanel x:Name="polygonStack" Visibility="Collapsed">
+                        <Button Width="50" Height="50" FontSize="30" Click="AddPointInput">+</Button>
+                        <TextBlock FontSize="15" Foreground="White">Height</TextBlock>
+                        <TextBox x:Name="polygonHeightTextbox"/>
+                    </StackPanel>
+                    <Button Width="100" Height="50" FontSize="20" Background="Lime" Margin="0, 20" Click="Approve">Approve</Button>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
     </Grid>
 </Window>
