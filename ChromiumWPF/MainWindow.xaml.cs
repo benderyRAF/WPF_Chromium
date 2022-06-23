@@ -27,21 +27,15 @@ namespace ChromiumWPF {
         enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel }
 
         private Action action = Action.None;
-
-        List<TextBox> points = new List<TextBox>();
+        private readonly List<TextBox> points = new List<TextBox>();
 
         public MainWindow() {
-
             InitializeComponent();
-
-        }
-
-        private void ClearPoints(object sender, RoutedEventArgs e) {
-            JsCall("(clearPoints())();");
         }
 
         private void JsCall(string command) {
 
+            // Calls function in cesium js.
             var frame = defaultBrowser.GetMainFrame();
             frame.EvaluateScriptAsync(command, null);
 
@@ -50,9 +44,9 @@ namespace ChromiumWPF {
         private void ChooseAction(object sender, RoutedEventArgs e) {
 
             string headerAction = ((MenuItem)sender).Header.ToString();
-
             actionLabel.Content = headerAction;
 
+            // Default values.
             actionStack.Visibility = Visibility.Visible;
             pointStack.Visibility = Visibility.Collapsed;
             lineStack.Visibility = Visibility.Collapsed;
@@ -107,14 +101,14 @@ namespace ChromiumWPF {
         }
 
         private void ModeSwitch(object sender, RoutedEventArgs e) {
-            JsCall($"(modeSwitch())();");
+            JsCall($"(modeSwitch())();"); // Switch camera view 2D/3D.
         }
 
         private void Approve(object sender, RoutedEventArgs e) {
 
             switch (action) {
 
-                case Action.SetLocation:
+                case Action.SetLocation: // Moves camera to position.
                     JsCall($"(moveTo({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();");
                     break;
 
@@ -128,6 +122,7 @@ namespace ChromiumWPF {
 
                 case Action.AddPolygon:
 
+                    // Builds array of coordinates: [x, y, x, y, x, y, ...].
                     string pointArray = "[";
                     points.ForEach(coordinate => {
                         pointArray += coordinate.Text;
@@ -135,6 +130,7 @@ namespace ChromiumWPF {
                     });
                     JsCall($"(addPolygon({pointArray}, {polygonHeightTextbox.Text}))();");
 
+                    // Clear polygon's point inputs.
                     for (int i = polygonStack.Children.Count - 1; i > 2; i--) {
                         polygonStack.Children.RemoveAt(i);
                     }
@@ -152,12 +148,13 @@ namespace ChromiumWPF {
 
             }
 
+            // Reseting all textboxes to empty string.
             foreach(UIElement element in actionStack.Children) {
-                if (element is StackPanel) {
+                if (element is StackPanel stackPanel) {
 
-                    foreach (UIElement element2 in ((StackPanel)element).Children) {
-                        if (element2 is TextBox) {
-                            ((TextBox)element2).Text = "";
+                    foreach (UIElement element2 in stackPanel.Children) {
+                        if (element2 is TextBox textBox) {
+                            textBox.Text = "";
                         }
                     }
 
@@ -168,10 +165,11 @@ namespace ChromiumWPF {
 
         private void AddPointInput(object sender, RoutedEventArgs e) {
 
-            TextBlock newTextBlock = new TextBlock();
-            newTextBlock.Text = $"Point {points.Count / 2 + 1}";
-            newTextBlock.FontSize = 15;
-            newTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            TextBlock newTextBlock = new TextBlock {
+                Text = $"Point {points.Count / 2 + 1}",
+                FontSize = 15,
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255))
+            };
 
             TextBox newTextBoxX = new TextBox();
             TextBox newTextBoxY = new TextBox();
