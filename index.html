@@ -9,8 +9,8 @@
 </head>
 <style>
   .map {
-    height: 600px;
-    width: 900px;
+    height: 800px;
+    width: 1200px;
   }
 </style>
 <body>
@@ -35,7 +35,7 @@
               url: 'tiles/{z}/{x}/{y}.png',
               maxZoom: 17
           })
-        })
+      }),
       ]
    });
 
@@ -78,6 +78,9 @@
     //Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
     var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
     
+
+
+
     //function will remove all the points
     function clearPoints()
     {
@@ -163,19 +166,22 @@ function modeSwitch() {
   //if its in 2d mode change to 3d
   if(scene._mode == 1)
   {
-    //fix camera location bug
-    scene.camera.flyTo({
+   
+    scene._mode = 3;
+     //fix camera location bug
+     scene.camera.flyTo({
     destination : scene.camera.position,
     orientation : {
         heading : Cesium.Math.toRadians(0),
         pitch : Cesium.Math.toRadians(-90),
         roll : 0.0
-    }
-    });
-    scene._mode = 3;
+    }});
+    scene.camera.zoomOut(100000000);
   } 
   else //if its in 3d changes to 2d
   {
+    
+    scene._mode = 1;
     //fix camera location bug
       scene.camera.flyTo({
       destination : scene.camera.position,
@@ -184,7 +190,7 @@ function modeSwitch() {
           pitch : Cesium.Math.toRadians(-90),
           roll : 0.0
       }});
-    scene._mode = 1;
+    scene.camera.zoomOut(10000);
   }
 }
 
@@ -218,6 +224,7 @@ function createModel(url, x, y, height) {
   });
   viewer.trackedEntity = entity;
 }
+
 
 </script>
 </body>
