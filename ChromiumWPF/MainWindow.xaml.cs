@@ -158,5 +158,26 @@ namespace ChromiumWPF {
             points.Add(newTextBoxY);
 
         }
+
+        private void NextField(object sender, KeyEventArgs e) {
+
+            if (e.Key == Key.Enter) {
+
+                TextBox textBox = (TextBox)sender;
+                StackPanel parent = (StackPanel)textBox.Parent;
+
+                int index = parent.Children.IndexOf(textBox);
+                index += parent.Children[index + 1] is TextBox ? 1 : 2;
+
+                if (index == parent.Children.Count - 1) {
+                    Approve(null, null);
+                } else {
+                    parent.Children[index].Focus();
+                }
+
+            }
+
+        }
+
     }
 }
