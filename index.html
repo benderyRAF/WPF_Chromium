@@ -187,6 +187,38 @@ function modeSwitch() {
     scene._mode = 1;
   }
 }
+
+
+
+
+function createModel(url, x, y, height) {
+  viewer.entities.removeAll();
+
+  const position = Cesium.Cartesian3.fromDegrees(
+    x, y, height
+  );
+  const heading = Cesium.Math.toRadians(135);
+  const pitch = 0;
+  const roll = 0;
+  const hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+  const orientation = Cesium.Transforms.headingPitchRollQuaternion(
+    position,
+    hpr
+  );
+
+  const entity = viewer.entities.add({
+    name: url,
+    position: position,
+    orientation: orientation,
+    model: {
+      uri: url,
+      minimumPixelSize: 128,
+      maximumScale: 2000000,
+    },
+  });
+  viewer.trackedEntity = entity;
+}
+
 </script>
 </body>
 </html>
