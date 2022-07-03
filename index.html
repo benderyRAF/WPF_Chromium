@@ -235,11 +235,11 @@ function loadStructureModel(url) {
     console.log('All tiles are loaded');
   });
 
-  tileset.readyPromise.then(function(tileset) {
-      // Set the camera to view the newly added tileset
-      console.log('Moving camera');
-      scene.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, 100, 0));
-  });
+  // tileset.readyPromise.then(function(tileset) {
+  //     // Set the camera to view the newly added tileset
+  //     console.log('Moving camera');
+  //     scene.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, 100, 0));
+  // });
 
 }
 
