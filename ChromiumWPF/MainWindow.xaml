@@ -62,6 +62,7 @@
                     
                     <StackPanel x:Name="polygonStack" Visibility="Collapsed">
                         <Button Width="50" Height="50" FontSize="30" Click="AddPointInput">+</Button>
+                        <Slider x:Name="opacitySlider" Width="300" Margin="10" Minimum="0" Maximum="1" Value="1"></Slider>
                         <TextBlock FontSize="15" Foreground="White">Height</TextBlock>
                         <TextBox x:Name="polygonHeightTextbox" KeyDown="NextField"/>
                     </StackPanel>

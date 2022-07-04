@@ -139,10 +139,10 @@ namespace ChromiumWPF {
                         pointArray += coordinate.Text;
                         pointArray += coordinate == points.Last() ? "]" : ",";
                     });
-                    JsCall($"(addPolygon({pointArray}, {polygonHeightTextbox.Text}))();");
+                    JsCall($"(addPolygon({pointArray}, {polygonHeightTextbox.Text}, {opacitySlider.Value}))();");
 
                     // Clear polygon's point inputs.
-                    for (int i = polygonStack.Children.Count - 1; i > 2; i--) {
+                    for (int i = polygonStack.Children.Count - 1; i > 3; i--) {
                         polygonStack.Children.RemoveAt(i);
                     }
                     points.Clear();

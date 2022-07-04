@@ -132,7 +132,7 @@
   const viewer = ol3d.getDataSourceDisplay().defaultDataSource;
   const entities = viewer.entities;
   //function creates polygon using given positions array and height
-  function addPolygon(degarr, height) {
+  function addPolygon(degarr, height, opacity) {
     //adds polygon
     entities.add({
       polygon: {
@@ -144,7 +144,7 @@
         outline: true,
         outlineColor: Cesium.Color.WHITE,
         outlineWidth: 4,
-        material: Cesium.Color.fromRandom({ alpha: 0.2 }),
+        material: Cesium.Color.fromRandom({ alpha: opacity }),
       },
     });
   }
