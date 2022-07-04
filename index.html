@@ -10,7 +10,7 @@
 <style>
   .map {
     height: 800px;
-    width: 1200px;
+    width: 100%;
   }
 </style>
 <body>
@@ -20,8 +20,12 @@
   <input id="b" type="number" value="32.856909"/>
   <input id="c" type="number" value="100"/>
   <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint(document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
+  <input id="pointByClickButton" type="button" value="Point by click - off" />
   <script>
 
+  const handler = new Cesium.ScreenSpaceEventHandler();  
+  var mousePosition;
+  var pointByClick = false;
   var pointDictionary = {}
 
   var ol2d = new ol.Map({
@@ -60,6 +64,13 @@
     modeSwitch()
   };
   document.getElementById('enable').addEventListener('click', setEnabled);
+
+  document.getElementById('pointByClickButton').addEventListener('click', (event) => {
+
+    pointByClick = !pointByClick
+    event.currentTarget.value = pointByClick ? "Point by click - on" : "Point by click - off"
+
+  });
 
   // Get a reference to the ellipsoid.
   var ellipsoid = scene.globe.ellipsoid;
@@ -247,6 +258,32 @@
     pointDictionary[id].position = Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
       parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid)
     
+  }
+
+  handler.setInputAction(function (movement) {
+    mousePosition = movement.endPosition
+  }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+  onclick = () => {
+    
+    if (!pointByClick) { return }
+
+    const selectedLocation = convertScreenPixelToLocation(mousePosition)
+    console.log(selectedLocation)
+
+    addPoint('p1', selectedLocation.lng, selectedLocation.lat, 0)
+    
+  }
+
+  function convertScreenPixelToLocation(mousePosition) {
+
+    const ellipsoid = scene.globe.ellipsoid;
+    const cartesian = scene.camera.pickEllipsoid(mousePosition, ellipsoid)
+    const cartographic = ellipsoid.cartesianToCartographic(cartesian)
+    const longitudeString = Cesium.Math.toDegrees(cartographic.longitude)
+    const latitudeString = Cesium.Math.toDegrees(cartographic.latitude)
+    return {lat: Number(latitudeString), lng: Number(longitudeString)}
+
   }
 
 </script>

@@ -13,6 +13,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        
         <Grid Grid.Row="0">
             <Menu Height="30" Margin="10" HorizontalAlignment="Left" Foreground="Black">
                 <MenuItem Header="Action" Width="100" Height="30" Background="Gray">
@@ -30,53 +35,53 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="localhost:5500/index.html" />
-            <GroupBox Width="500" HorizontalAlignment="Right">
-                <StackPanel x:Name="actionStack" Visibility="Collapsed">
-                    
-                    <Label x:Name="actionLabel" FontSize="30" Foreground="White" HorizontalAlignment="Center"></Label>
-                    
-                    <StackPanel x:Name="pointStack" Visibility="Collapsed">
-                        <TextBlock FontSize="15" Foreground="White">Id</TextBlock>
-                        <TextBox x:Name="pointIdTextbox" KeyDown="NextField"/>
-                        <TextBlock FontSize="15" Foreground="White">Longitude</TextBlock>
-                        <TextBox x:Name="longitudeTextbox" KeyDown="NextField"/>
-                        <TextBlock FontSize="15" Foreground="White">Latitude</TextBlock>
-                        <TextBox x:Name="latitudeTextbox" KeyDown="NextField"/>
-                        <TextBlock FontSize="15" Foreground="White">Height</TextBlock>
-                        <TextBox x:Name="heightTextbox" Tag="LastInStack" KeyDown="NextField"/>
-                        <TextBlock x:Name="urlTextblock" FontSize="15" Foreground="White">Url</TextBlock>
-                        <TextBox x:Name="urlTextbox" KeyDown="NextField"/>
-                    </StackPanel>
-                    
-                    <StackPanel x:Name="lineStack" Visibility="Collapsed">
-                        <TextBlock FontSize="15" Foreground="White">Source point</TextBlock>
-                        <TextBox x:Name="srcPointXTextbox" KeyDown="NextField"/>
-                        <TextBox x:Name="srcPointYTextbox" KeyDown="NextField"/>
-                        <TextBlock FontSize="15" Foreground="White">Destination point</TextBlock>
-                        <TextBox x:Name="dstPointXTextbox" KeyDown="NextField"/>
-                        <TextBox x:Name="dstPointYTextbox" KeyDown="NextField"/>
-                        <TextBlock FontSize="15" Foreground="White">Width</TextBlock>
-                        <TextBox x:Name="widthTextbox" Tag="LastInStack" KeyDown="NextField"/>
-                    </StackPanel>
-                    
-                    <StackPanel x:Name="polygonStack" Visibility="Collapsed">
-                        <Button Width="50" Height="50" FontSize="30" Click="AddPointInput">+</Button>
-                        <Slider x:Name="opacitySlider" Width="300" Margin="10" Minimum="0" Maximum="1" Value="1"></Slider>
-                        <TextBlock FontSize="15" Foreground="White">Height</TextBlock>
-                        <TextBox x:Name="polygonHeightTextbox" KeyDown="NextField"/>
-                    </StackPanel>
-
-                    <StackPanel x:Name="urlStack" Visibility="Collapsed">
-                        <TextBlock FontSize="15" Foreground="White">Url</TextBlock>
-                        <TextBox x:Name="urlStackTextbox" Tag="LastInStack" KeyDown="NextField"/>
-                    </StackPanel>
-                    
-                    <Button Width="100" Height="50" FontSize="20" Background="Lime" Margin="0, 20" Click="Approve">Approve</Button>
-                    
-                </StackPanel>
-            </GroupBox>
+            <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="localhost:5500/index.html" Grid.Column="1" />
         </Grid>
+        <GroupBox Grid.Row="1" Grid.Column="1">
+            <StackPanel x:Name="actionStack" Visibility="Collapsed">
+
+                <Label x:Name="actionLabel" FontSize="30" Foreground="White" HorizontalAlignment="Center"/>
+
+                <StackPanel x:Name="pointStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Id"/></TextBlock>
+                    <TextBox x:Name="pointIdTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Longitude"/></TextBlock>
+                    <TextBox x:Name="longitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Latitude"/></TextBlock>
+                    <TextBox x:Name="latitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="heightTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                    <TextBlock x:Name="urlTextblock" FontSize="15" Foreground="White"><Run Text="Url"/></TextBlock>
+                    <TextBox x:Name="urlTextbox" KeyDown="NextField"/>
+                </StackPanel>
+
+                <StackPanel x:Name="lineStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Source point"/></TextBlock>
+                    <TextBox x:Name="srcPointXTextbox" KeyDown="NextField"/>
+                    <TextBox x:Name="srcPointYTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Destination point"/></TextBlock>
+                    <TextBox x:Name="dstPointXTextbox" KeyDown="NextField"/>
+                    <TextBox x:Name="dstPointYTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Width"/></TextBlock>
+                    <TextBox x:Name="widthTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                </StackPanel>
+
+                <StackPanel x:Name="polygonStack" Visibility="Collapsed">
+                    <Button Width="50" Height="50" FontSize="30" Click="AddPointInput" Content="+"/>
+                    <Slider x:Name="opacitySlider" Width="300" Margin="10" Minimum="0" Maximum="1" Value="1"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="polygonHeightTextbox" KeyDown="NextField"/>
+                </StackPanel>
+
+                <StackPanel x:Name="urlStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Url"/></TextBlock>
+                    <TextBox x:Name="urlStackTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                </StackPanel>
+
+                <Button Width="100" Height="50" FontSize="20" Background="Lime" Margin="0, 20" Click="Approve" Content="Approve"/>
+
+            </StackPanel>
+        </GroupBox>
 
     </Grid>
 </Window>
