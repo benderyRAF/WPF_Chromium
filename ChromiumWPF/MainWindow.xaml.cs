@@ -24,7 +24,7 @@ namespace ChromiumWPF {
     /// </summary>
     public partial class MainWindow : Window {
 
-        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel }
+        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint }
 
         private Action action = Action.None;
         private readonly List<TextBox> points = new List<TextBox>();
@@ -102,6 +102,11 @@ namespace ChromiumWPF {
                     urlStack.Visibility = Visibility.Visible;
                     break;
 
+                case "Move point":
+                    action = Action.MovePoint;
+                    pointStack.Visibility = Visibility.Visible;
+                    break;
+
             }
 
         }
@@ -119,7 +124,7 @@ namespace ChromiumWPF {
                     break;
 
                 case Action.AddPoint:
-                    JsCall($"(addPoint({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();");
+                    JsCall($"(addPoint('{pointIdTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();");
                     break;
 
                 case Action.Addpolyline:
@@ -154,6 +159,10 @@ namespace ChromiumWPF {
 
                 case Action.LoadStructureModel:
                     JsCall($"(loadStructureModel('{urlStackTextbox.Text}'))();");
+                    break;
+                
+                case Action.MovePoint:
+                    JsCall($"(movePoint('{pointIdTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}))();");
                     break;
 
             }

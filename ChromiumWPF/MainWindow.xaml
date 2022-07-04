@@ -23,6 +23,7 @@
                     <MenuItem Header="Add image" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Create model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Load structure model" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Move point" Click="ChooseAction"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Mode switch" Width="100" Height="30" Background="Gray" Click="ModeSwitch"/>
             </Menu>
@@ -36,6 +37,8 @@
                     <Label x:Name="actionLabel" FontSize="30" Foreground="White" HorizontalAlignment="Center"></Label>
                     
                     <StackPanel x:Name="pointStack" Visibility="Collapsed">
+                        <TextBlock FontSize="15" Foreground="White">Id</TextBlock>
+                        <TextBox x:Name="pointIdTextbox" KeyDown="NextField"/>
                         <TextBlock FontSize="15" Foreground="White">Longitude</TextBlock>
                         <TextBox x:Name="longitudeTextbox" KeyDown="NextField"/>
                         <TextBlock FontSize="15" Foreground="White">Latitude</TextBlock>

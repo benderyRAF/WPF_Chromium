@@ -22,7 +22,9 @@
   <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint(document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
   <script>
 
-    var ol2d = new ol.Map({
+  var pointDictionary = {}
+
+  var ol2d = new ol.Map({
     target: 'map',
     view: new ol.View({
       zoom: 5,
@@ -36,71 +38,72 @@
               maxZoom: 17
           })
       }),
-      ]
-   });
+    ]
+  });
 
-   var ol3d = new olcs.OLCesium({
-      map: ol2d,
-    });
+  var ol3d = new olcs.OLCesium({
+    map: ol2d,
+  });
 
-    var scene = ol3d.getCesiumScene();
-    // add local terrain tiles, need to be on local web server
-    var terrainProvider = new Cesium.CesiumTerrainProvider({
-      url : 'http://localhost:9002/tilesets/tiles'
-    });
-    scene.terrainProvider = terrainProvider;
-    //enable 3d by default
-    ol3d.setEnabled(true);
-    // change between 2d to 3d
-    var setEnabled = function () {
-      modeSwitch()
-        
-    };
-    document.getElementById('enable').addEventListener('click', setEnabled);
+  var scene = ol3d.getCesiumScene();
+  // add local terrain tiles, need to be on local web server
+  var terrainProvider = new Cesium.CesiumTerrainProvider({
+    url : 'http://localhost:9002/tilesets/tiles'
+  });
+  scene.terrainProvider = terrainProvider;
 
-    // Get a reference to the ellipsoid.
-    var ellipsoid = scene.globe.ellipsoid;
+  //enable 3d by default
+  ol3d.setEnabled(true);
 
-    // add random point for example
-    var pointOfInterest = Cesium.Cartographic.fromDegrees(
-      35.04592791446208, 31.48658108795938, 5000, new Cesium.Cartographic());
+  // change between 2d to 3d
+  var setEnabled = function () {
+    modeSwitch()
+  };
+  document.getElementById('enable').addEventListener('click', setEnabled);
 
-    // Sample terrain is asynchronous function, so wait until the map loaded
-    document.addEventListener('DOMContentLoaded', async function() {
+  // Get a reference to the ellipsoid.
+  var ellipsoid = scene.globe.ellipsoid;
+
+  // add random point for example
+  var pointOfInterest = Cesium.Cartographic.fromDegrees(
+    35.04592791446208, 31.48658108795938, 5000, new Cesium.Cartographic());
+
+  // Sample terrain is asynchronous function, so wait until the map loaded
+  document.addEventListener('DOMContentLoaded', async function() {
+
     // get the height og the point
-      await Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
-      var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
-      //  points.add({
-      //    position : Cesium.Cartographic.toCartesian(pointOfInterest, ellipsoid),
-      //    color : Cesium.Color.CYAN,
-      //});
-    }, false);
-    //Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
+    await Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
     var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
-    
+
+  }, false);
+
+  //Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
+  var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
+  
 
 
+  //function will remove all the points
+  function clearPoints() {
+    points.removeAll(); 
+  }
 
-    //function will remove all the points
-    function clearPoints()
-    {
-     points.removeAll(); 
-    }
+  //function gets id,x,y,z and places a point there
+  function addPoint(id, x, y, z) {
 
-    //function gets x,y,z and places a point there
-    function addPoint(x, y, z)
-    {
-      //creates and adds point to scene
-      var p = points.add({
-        position : Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
-        parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid),
-        color : Cesium.Color.CYAN
-      });
-    }
+    // Creates and adds point to scene
+    var point = points.add({
+      position : Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
+      parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid),
+      color : Cesium.Color.CYAN
+    });
+
+    // Adds point to points collection
+    pointDictionary[id] = point
+
+  }
 
   //gets x,y of start and x,y of dest and width
-  function addLine(s1, s2, d1, d2, width)
-  {
+  function addLine(s1, s2, d1, d2, width) {
     //creates line variable
     var line = new Cesium.GeometryInstance({
     geometry : new Cesium.GroundPolylineGeometry({
@@ -119,70 +122,53 @@
   }
 
   //move camera to position given
-  function moveTo(x,y,z) 
-  {
+  function moveTo(x,y,z) {
     scene.camera.flyTo({
       destination : Cesium.Cartesian3.fromDegrees(x, y, z)
     });
   }
   
+  //gets cesium entities variable
+  const viewer = ol3d.getDataSourceDisplay().defaultDataSource;
+  const entities = viewer.entities;
+  //function creates polygon using given positions array and height
+  function addPolygon(degarr, height) {
+    //adds polygon
+    entities.add({
+      polygon: {
+        hierarchy: new Cesium.PolygonHierarchy(
+          Cesium.Cartesian3.fromDegreesArray(degarr)
+        ),
+        height: 3000.0,
+        extrudedHeight: height,
+        outline: true,
+        outlineColor: Cesium.Color.WHITE,
+        outlineWidth: 4,
+        material: Cesium.Color.fromRandom({ alpha: 0.2 }),
+      },
+    });
+  }
 
-//gets cesium entities variable
-const viewer = ol3d.getDataSourceDisplay().defaultDataSource;
-const entities = viewer.entities;
-//function creates polygon using given positions array and height
-function addPolygon(degarr, height) {
-  //adds polygon
-  entities.add({
-    polygon: {
-      hierarchy: new Cesium.PolygonHierarchy(
-        Cesium.Cartesian3.fromDegreesArray(degarr)
-      ),
-      height: 3000.0,
-      extrudedHeight: height,
-      outline: true,
-      outlineColor: Cesium.Color.WHITE,
-      outlineWidth: 4,
-      material: Cesium.Color.fromRandom({ alpha: 0.2 }),
-    },
-  });
-}
+  //adds an image waypoint using given image url and given location
+  function addImage(x,y,z,url) {
+    entities.add({
+      position: Cesium.Cartesian3.fromDegrees(x, y, z),
+      billboard: {
+        image: url,
+        height: 30,
+        width: 30
+      },
+    });
+  }
 
-//adds an image waypoint using given image url and given location
-function addImage(x,y,z,url)
-{
-  entities.add({
-    position: Cesium.Cartesian3.fromDegrees(x, y, z),
-    billboard: {
-      image: url,
-      height: 30,
-      width: 30
-    },
-  });
-}
-
-//function switches between 2d and 3d
-function modeSwitch() {
-  //if its in 2d mode change to 3d
-  if(scene._mode == 1)
-  {
-   
-    scene._mode = 3;
-     //fix camera location bug
-     scene.camera.flyTo({
-    destination : scene.camera.position,
-    orientation : {
-        heading : Cesium.Math.toRadians(0),
-        pitch : Cesium.Math.toRadians(-90),
-        roll : 0.0
-    }});
-    scene.camera.zoomOut(100000000);
-  } 
-  else //if its in 3d changes to 2d
-  {
+  //function switches between 2d and 3d
+  function modeSwitch() {
+    //if its in 2d mode change to 3d
+    if(scene._mode == 1)
+    {
     
-    scene._mode = 1;
-    //fix camera location bug
+      scene._mode = 3;
+      //fix camera location bug
       scene.camera.flyTo({
       destination : scene.camera.position,
       orientation : {
@@ -190,58 +176,78 @@ function modeSwitch() {
           pitch : Cesium.Math.toRadians(-90),
           roll : 0.0
       }});
-    scene.camera.zoomOut(10000);
+      scene.camera.zoomOut(100000000);
+    } 
+    else //if its in 3d changes to 2d
+    {
+      
+      scene._mode = 1;
+      //fix camera location bug
+        scene.camera.flyTo({
+        destination : scene.camera.position,
+        orientation : {
+            heading : Cesium.Math.toRadians(0),
+            pitch : Cesium.Math.toRadians(-90),
+            roll : 0.0
+        }});
+      scene.camera.zoomOut(10000);
+    }
   }
-}
 
+  function createModel(url, x, y, height) {
+    viewer.entities.removeAll();
 
+    const position = Cesium.Cartesian3.fromDegrees(
+      x, y, height
+    );
+    const heading = Cesium.Math.toRadians(135);
+    const pitch = 0;
+    const roll = 0;
+    const hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+    const orientation = Cesium.Transforms.headingPitchRollQuaternion(
+      position,
+      hpr
+    );
 
+    const entity = viewer.entities.add({
+      name: url,
+      position: position,
+      orientation: orientation,
+      model: {
+        uri: url,
+        minimumPixelSize: 128,
+        maximumScale: 2000000,
+      },
+    });
+    viewer.trackedEntity = entity;
+  }
 
-function createModel(url, x, y, height) {
-  viewer.entities.removeAll();
+  function loadStructureModel(url) {
 
-  const position = Cesium.Cartesian3.fromDegrees(
-    x, y, height
-  );
-  const heading = Cesium.Math.toRadians(135);
-  const pitch = 0;
-  const roll = 0;
-  const hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-  const orientation = Cesium.Transforms.headingPitchRollQuaternion(
-    position,
-    hpr
-  );
+    const tileset = scene.primitives.add(new Cesium.Cesium3DTileset({
+      url : url
+    }));
 
-  const entity = viewer.entities.add({
-    name: url,
-    position: position,
-    orientation: orientation,
-    model: {
-      uri: url,
-      minimumPixelSize: 128,
-      maximumScale: 2000000,
-    },
-  });
-  viewer.trackedEntity = entity;
-}
+    tileset.allTilesLoaded.addEventListener(function() {
+      console.log('All tiles are loaded');
+    });
 
-function loadStructureModel(url) {
+    // tileset.readyPromise.then(function(tileset) {
+    //     // Set the camera to view the newly added tileset
+    //     console.log('Moving camera');
+    //     scene.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, 100, 0));
+    // });
 
-  const tileset = scene.primitives.add(new Cesium.Cesium3DTileset({
-    url : url
-  }));
+  }
 
-  tileset.allTilesLoaded.addEventListener(function() {
-    console.log('All tiles are loaded');
-  });
+  function movePoint(id, x, y, z) {
 
-  // tileset.readyPromise.then(function(tileset) {
-  //     // Set the camera to view the newly added tileset
-  //     console.log('Moving camera');
-  //     scene.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, 100, 0));
-  // });
+    if (!(id in pointDictionary)) { return }
 
-}
+    pointDictionary[id].position = Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
+      parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid)
+    
+  }
 
 </script>
 </body>
