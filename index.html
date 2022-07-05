@@ -20,12 +20,18 @@
   <input id="b" type="number" value="32.856909"/>
   <input id="c" type="number" value="100"/>
   <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint(document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
-  <input id="pointByClickButton" type="button" value="Point by click - off" />
   <script>
 
-  const handler = new Cesium.ScreenSpaceEventHandler();  
+  const ClickMode = {
+	  None: 0,
+	  Point: 1,
+	  Polyline: 2,
+	  Polygon: 3
+  }
+
+  const handler = new Cesium.ScreenSpaceEventHandler();
+  var CurrentClickMode = ClickMode.None;
   var mousePosition;
-  var pointByClick = false;
   var pointDictionary = {}
 
   var ol2d = new ol.Map({
@@ -64,13 +70,6 @@
     modeSwitch()
   };
   document.getElementById('enable').addEventListener('click', setEnabled);
-
-  document.getElementById('pointByClickButton').addEventListener('click', (event) => {
-
-    pointByClick = !pointByClick
-    event.currentTarget.value = pointByClick ? "Point by click - on" : "Point by click - off"
-
-  });
 
   // Get a reference to the ellipsoid.
   var ellipsoid = scene.globe.ellipsoid;
@@ -113,21 +112,18 @@
 
   }
 
-  //gets x,y of start and x,y of dest and width
-  function addLine(s1, s2, d1, d2, width) {
+  //function creates polyline using given positions array
+  function addPolyline(points, width = 10) {
     //creates line variable
     var line = new Cesium.GeometryInstance({
     geometry : new Cesium.GroundPolylineGeometry({
-      positions : Cesium.Cartesian3.fromDegreesArray([
-      s1, s2,
-      d1, d2
-      ]),
+      positions : Cesium.Cartesian3.fromDegreesArray(points),
       width : width
     })});
     // adds line to scene
     scene.groundPrimitives.add(new Cesium.GroundPolylinePrimitive({
     geometryInstances : line,
-    allowPicking: true,
+    allowPicking : true,
     appearance : new Cesium.PolylineMaterialAppearance()
     }));
   }
@@ -143,12 +139,12 @@
   const viewer = ol3d.getDataSourceDisplay().defaultDataSource;
   const entities = viewer.entities;
   //function creates polygon using given positions array and height
-  function addPolygon(degarr, height, opacity) {
+  function addPolygon(points, height = 100, opacity = 1) {
     //adds polygon
     entities.add({
       polygon: {
         hierarchy: new Cesium.PolygonHierarchy(
-          Cesium.Cartesian3.fromDegreesArray(degarr)
+          Cesium.Cartesian3.fromDegreesArray(points)
         ),
         height: 3000.0,
         extrudedHeight: height,
@@ -177,7 +173,6 @@
     //if its in 2d mode change to 3d
     if(scene._mode == 1)
     {
-    
       scene._mode = 3;
       //fix camera location bug
       scene.camera.flyTo({
@@ -191,7 +186,6 @@
     } 
     else //if its in 3d changes to 2d
     {
-      
       scene._mode = 1;
       //fix camera location bug
         scene.camera.flyTo({
@@ -260,13 +254,13 @@
     
   }
 
-  handler.setInputAction(function (movement) {
+  handler.setInputAction(function(movement) {
     mousePosition = movement.endPosition
   }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
   onclick = () => {
     
-    if (!pointByClick) { return }
+    if (CurrentClickMode == ClickMode.None) { return }
 
     const selectedLocation = convertScreenPixelToLocation(mousePosition)
     console.log(selectedLocation)
@@ -282,7 +276,24 @@
     const cartographic = ellipsoid.cartesianToCartographic(cartesian)
     const longitudeString = Cesium.Math.toDegrees(cartographic.longitude)
     const latitudeString = Cesium.Math.toDegrees(cartographic.latitude)
-    return {lat: Number(latitudeString), lng: Number(longitudeString)}
+    return {latitude: Number(latitudeString), longitude: Number(longitudeString)}
+
+  }
+
+  function addPointByClick() {
+    
+    const selectedLocation = convertScreenPixelToLocation(mousePosition)
+    console.log(selectedLocation)
+
+    addPoint('p1', selectedLocation.longitude, selectedLocation.latitude, 0)
+
+    return JSON.stringify({
+      id: 'p1',
+      position: {
+        longitude: selectedLocation.longitude,
+        latitude: selectedLocation.latitude
+      }
+    })
 
   }
 

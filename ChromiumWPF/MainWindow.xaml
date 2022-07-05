@@ -35,7 +35,11 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <cefSharp:ChromiumWebBrowser Name="defaultBrowser" Address="localhost:5500/index.html" Grid.Column="1" />
+            <cefSharp:ChromiumWebBrowser
+                Name="defaultBrowser"
+                Address="http://127.0.0.1:5500/index.html"
+                Grid.Column="1"
+                PreviewMouseDown="CesiumClick"/>
         </Grid>
         <GroupBox Grid.Row="1" Grid.Column="1">
             <StackPanel x:Name="actionStack" Visibility="Collapsed">
@@ -55,19 +59,10 @@
                     <TextBox x:Name="urlTextbox" KeyDown="NextField"/>
                 </StackPanel>
 
-                <StackPanel x:Name="lineStack" Visibility="Collapsed">
-                    <TextBlock FontSize="15" Foreground="White"><Run Text="Source point"/></TextBlock>
-                    <TextBox x:Name="srcPointXTextbox" KeyDown="NextField"/>
-                    <TextBox x:Name="srcPointYTextbox" KeyDown="NextField"/>
-                    <TextBlock FontSize="15" Foreground="White"><Run Text="Destination point"/></TextBlock>
-                    <TextBox x:Name="dstPointXTextbox" KeyDown="NextField"/>
-                    <TextBox x:Name="dstPointYTextbox" KeyDown="NextField"/>
-                    <TextBlock FontSize="15" Foreground="White"><Run Text="Width"/></TextBlock>
-                    <TextBox x:Name="widthTextbox" Tag="LastInStack" KeyDown="NextField"/>
-                </StackPanel>
-
-                <StackPanel x:Name="polygonStack" Visibility="Collapsed">
+                <StackPanel x:Name="pointsStack" Visibility="Collapsed">
                     <Button Width="50" Height="50" FontSize="30" Click="AddPointInput" Content="+"/>
+                    <TextBlock x:Name="widthTextblock" FontSize="15" Foreground="White"><Run Text="Width"/></TextBlock>
+                    <TextBox x:Name="widthTextbox" Tag="LastInStack" KeyDown="NextField"/>
                     <Slider x:Name="opacitySlider" Width="300" Margin="10" Minimum="0" Maximum="1" Value="1"/>
                     <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
                     <TextBox x:Name="polygonHeightTextbox" KeyDown="NextField"/>
