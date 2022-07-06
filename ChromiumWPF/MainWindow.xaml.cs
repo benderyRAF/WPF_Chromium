@@ -117,6 +117,11 @@ namespace ChromiumWPF {
                     pointStack.Visibility = Visibility.Visible;
                     break;
 
+                case "Clear points":
+                    JsCall($"clearPoints();");
+                    pointStack.Visibility = Visibility.Visible;
+                    break;
+
             }
 
         }
@@ -270,6 +275,10 @@ namespace ChromiumWPF {
 
                     if (EvaluateJavaScriptResult == null) return;
                     if (action != Action.AddPoint) {
+                        if (action == Action.AddPolygon & e.ClickCount == 2)
+                        {
+                            Console.WriteLine(EvaluateJavaScriptResult);
+                        }
                         polyPoints.Add(JObject.Parse(EvaluateJavaScriptResult));
                     }
 

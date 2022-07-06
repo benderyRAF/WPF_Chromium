@@ -19,7 +19,7 @@
   <input id="a" type="number" value="35.269343"/>
   <input id="b" type="number" value="32.856909"/>
   <input id="c" type="number" value="100"/>
-  <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint(document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
+  <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint('defult',document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
   <script>
 
   const ClickMode = {
@@ -296,6 +296,17 @@
     })
 
   }
+
+  //double click on object deletes the object
+  var handler2 = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+  handler2.setInputAction(function(click) {
+  event.preventDefault();//OR click.preventDefault();
+  var pickedObject = scene.pick(click.position);
+  console.log(pickedObject);
+  if (Cesium.defined(pickedObject)) {
+    entities.removeById(pickedObject.id._id);
+  }
+}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
 </script>
 </body>
