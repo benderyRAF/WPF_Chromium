@@ -199,9 +199,11 @@
     }
   }
 
+  // adds a 3d model to the map
+  // takes url to the 3d model, x and y position amd height to put the 3d model at
   function createModel(url, x, y, height) {
-    viewer.entities.removeAll();
 
+    //sets the variables needed to crete the 3d model on the map
     const position = Cesium.Cartesian3.fromDegrees(
       x, y, height
     );
@@ -214,6 +216,7 @@
       hpr
     );
 
+    // adds 3d model entity to the map 
     const entity = viewer.entities.add({
       name: url,
       position: position,
@@ -297,16 +300,17 @@
 
   }
 
-  //double click on object deletes the object
+  //double click on entitiy object deletes the object
   var handler2 = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-  handler2.setInputAction(function(click) {
-  event.preventDefault();//OR click.preventDefault();
-  var pickedObject = scene.pick(click.position);
-  console.log(pickedObject);
-  if (Cesium.defined(pickedObject)) {
-    entities.removeById(pickedObject.id._id);
-  }
-}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+  handler2.setInputAction(function(click)
+  {
+    event.preventDefault(); // disable mouse action to not move screen
+    var pickedObject = scene.pick(click.position); // pick the object the mouse clicked on 
+    if (Cesium.defined(pickedObject))
+    {
+      entities.removeById(pickedObject.id._id);// delete the object set to be deleted
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
 </script>
 </body>
