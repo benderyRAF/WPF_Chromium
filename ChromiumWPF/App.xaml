@@ -1,0 +1,12 @@
+﻿<Application x:Class="ChromiumWPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ChromiumWPF"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        
+        <!-- Colors -->
+        <SolidColorBrush x:Key="wbBackground" Color="#222831" />
+
+    </Application.Resources>
+</Application>

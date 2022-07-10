@@ -1,0 +1,83 @@
+﻿<Window x:Class="ChromiumWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChromiumWPF"
+        xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+    <Grid Background="{DynamicResource wbBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Menu Height="30" Margin="10" HorizontalAlignment="Left" Foreground="Black">
+                <MenuItem Header="Action" Width="100" Height="30" Background="Gray">
+                    <MenuItem Header="Set location" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add point" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add polyline" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add polygon" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add image" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Create model" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Load structure model" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Move point" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Clear points" Click="ChooseAction"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Mode switch" Width="100" Height="30" Background="Gray" Click="ModeSwitch"/>
+            </Menu>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <cefSharp:ChromiumWebBrowser
+                Name="defaultBrowser"
+                Address="http://127.0.0.1:5500/index.html"
+                Grid.Column="1"
+                PreviewMouseDown="CesiumClick"/>
+        </Grid>
+        <GroupBox Grid.Row="1" Grid.Column="1">
+            <StackPanel x:Name="actionStack" Visibility="Collapsed">
+
+                <Label x:Name="actionLabel" FontSize="30" Foreground="White" HorizontalAlignment="Center"/>
+
+                <StackPanel x:Name="pointStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Id"/></TextBlock>
+                    <TextBox x:Name="pointIdTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Longitude"/></TextBlock>
+                    <TextBox x:Name="longitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Latitude"/></TextBlock>
+                    <TextBox x:Name="latitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="heightTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                    <TextBlock x:Name="urlTextblock" FontSize="15" Foreground="White"><Run Text="Url"/></TextBlock>
+                    <TextBox x:Name="urlTextbox" KeyDown="NextField"/>
+                </StackPanel>
+
+                <StackPanel x:Name="pointsStack" Visibility="Collapsed">
+                    <Button Width="50" Height="50" FontSize="30" Click="AddPointInput" Content="+"/>
+                    <TextBlock x:Name="widthTextblock" FontSize="15" Foreground="White"><Run Text="Width"/></TextBlock>
+                    <TextBox x:Name="widthTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                    <Slider x:Name="opacitySlider" Width="300" Margin="10" Minimum="0" Maximum="1" Value="1"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="polygonHeightTextbox" KeyDown="NextField"/>
+                </StackPanel>
+
+                <StackPanel x:Name="urlStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Url"/></TextBlock>
+                    <TextBox x:Name="urlStackTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                </StackPanel>
+
+                <Button Width="100" Height="50" FontSize="20" Background="Lime" Margin="0, 20" Click="Approve" Content="Approve"/>
+
+            </StackPanel>
+        </GroupBox>
+
+    </Grid>
+</Window>
