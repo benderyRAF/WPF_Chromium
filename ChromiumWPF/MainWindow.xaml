@@ -30,6 +30,8 @@
                     <MenuItem Header="Load structure model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Move point" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Clear points" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Export actions" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Import actions" Click="ChooseAction"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Mode switch" Width="100" Height="30" Background="Gray" Click="ModeSwitch"/>
             </Menu>

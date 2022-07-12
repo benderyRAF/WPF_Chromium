@@ -18,14 +18,15 @@ using CefSharp.Wpf;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace ChromiumWPF {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-
-        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint }
+        string savedCommands = "";
+        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint, ExportActions, ImportActions }
 
         private Action action = Action.None;
         private readonly List<TextBox> points = new List<TextBox>();
@@ -39,6 +40,7 @@ namespace ChromiumWPF {
 
             // Calls function in cesium js.
             var frame = defaultBrowser.GetMainFrame();
+            savedCommands = savedCommands + command;
             frame.EvaluateScriptAsync(command, null);
 
         }
@@ -120,6 +122,14 @@ namespace ChromiumWPF {
                 case "Clear points":
                     JsCall($"clearPoints();");
                     break;
+                case "Export actions":
+                    action = Action.ExportActions;
+                    urlStack.Visibility = Visibility.Visible;
+                    break;
+                case "Import actions":
+                    action = Action.ImportActions;
+                    urlStack.Visibility = Visibility.Visible;
+                    break;
 
             }
 
@@ -174,6 +184,14 @@ namespace ChromiumWPF {
                 
                 case Action.MovePoint:
                     JsCall($"movePoint('{pointIdTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
+                    break;
+
+                case Action.ExportActions:
+                    File.WriteAllText(urlStackTextbox.Text, savedCommands);
+                    break;
+                case Action.ImportActions:
+                    string importedCalls = File.ReadAllText(urlStackTextbox.Text);
+                    JsCall(importedCalls);
                     break;
 
             }
