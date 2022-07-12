@@ -76,6 +76,21 @@
                     <TextBox x:Name="urlStackTextbox" Tag="LastInStack" KeyDown="NextField"/>
                 </StackPanel>
 
+                <StackPanel x:Name="DropdownStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Longitude"/></TextBlock>
+                    <TextBox x:Name="modellongitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Latitude"/></TextBlock>
+                    <TextBox x:Name="modellatitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="modelheightTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Models"/></TextBlock>
+                    <ComboBox x:Name="ModelMenu">
+                        <ComboBoxItem>Drone</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">Plane</ComboBoxItem>
+                        <ComboBoxItem>House</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
                 <Button Width="100" Height="50" FontSize="20" Background="Lime" Margin="0, 20" Click="Approve" Content="Approve"/>
 
             </StackPanel>

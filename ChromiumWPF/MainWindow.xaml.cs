@@ -102,11 +102,11 @@ namespace ChromiumWPF {
 
                 case "Create model":
                     action = Action.CreateModel;
-                    pointStack.Visibility = Visibility.Visible;
-                    urlTextblock.Visibility = Visibility.Visible;
+                    DropdownStack.Visibility = Visibility.Visible;
+                    ModelMenu.Visibility = Visibility.Visible;
                     urlTextbox.Visibility = Visibility.Visible;
-                    heightTextbox.Tag = "";
-                    urlTextbox.Tag = "LastInStack";
+                    modelheightTextbox.Tag = "";
+                    ModelMenu.Tag = "LastInStack";
                     break;
 
                 case "Load structure model":
@@ -175,7 +175,23 @@ namespace ChromiumWPF {
                     break;
 
                 case Action.CreateModel:
-                    JsCall($"createModel('{urlTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
+                    string modelurl = "";
+                    Console.WriteLine(ModelMenu.SelectedItem.ToString());
+
+                    ComboBoxItem selected = (ComboBoxItem)ModelMenu.SelectedItem;
+                    if (selected.Content.ToString() == "Drone")
+                    {
+                        modelurl = "./Drone.glb";
+                    }
+                    else if (selected.Content.ToString() == "Plane")
+                    {
+                        modelurl = "./Plane.glb";
+                    }
+                    else
+                    {
+                        modelurl = "./house.glb";
+                    }
+                    JsCall($"createModel('{modelurl}', {modellongitudeTextbox.Text}, {modellatitudeTextbox.Text}, {modelheightTextbox.Text});");
                     break;
 
                 case Action.LoadStructureModel:
