@@ -334,13 +334,16 @@
       holderPolygon = pickedObject;
       var points = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(holderPolygon.id.polygon.hierarchy.getValue().positions);
       
+      var cameraPosition = scene.camera.positionWC;
+      var ellipsoidPosition = scene.globe.ellipsoid.scaleToGeodeticSurface(cameraPosition);
+      var cameraHeight = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(cameraPosition, ellipsoidPosition, new Cesium.Cartesian3()));
+
       position = convertScreenPixelToLocation(mousePosition);
       pointCount = -2;
       points.forEach(point => {
 
         pointCount += 2;
-        console.log(Math.sqrt(Math.pow(position.longitude - point.longitude * 180 / Math.PI, 2) + Math.pow(position.latitude - point.latitude * 180 / Math.PI, 2)))
-        if (Math.sqrt(Math.pow(position.longitude - point.longitude * 180 / Math.PI, 2) + Math.pow(position.latitude - point.latitude * 180 / Math.PI, 2)) < 1) {
+        if (Math.sqrt(Math.pow(position.longitude - point.longitude * 180 / Math.PI, 2) + Math.pow(position.latitude - point.latitude * 180 / Math.PI, 2)) < cameraHeight / 5000000) {
           holderPoint = pointCount;
         }
 
@@ -420,7 +423,7 @@
 
   }, Cesium.ScreenSpaceEventType.LEFT_UP);
 
-  //double click on entitiy object deletes the object
+  // double click on entitiy object deletes the object
   handler.setInputAction(function(click) {
 
     event.preventDefault(); // disable mouse action to not move screen
