@@ -36,6 +36,12 @@
             </Menu>
         </Grid>
 
+        <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
+            <Button Width="40" Height="40" Margin="10, 0, 0, 0"  Click="Refresh">
+                <Image Source="Images/Refresh.png"/>
+            </Button>
+        </Grid>
+        
         <Grid Grid.Row="1" Grid.Column="1">
             <cefSharp:ChromiumWebBrowser
                 Name="defaultBrowser"
