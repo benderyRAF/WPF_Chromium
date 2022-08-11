@@ -9,7 +9,7 @@
 </head>
 <style>
   .map {
-    height: 800px;
+    height: 95vh;
     width: 100%;
   }
 </style>
@@ -21,13 +21,6 @@
   <input id="c" type="number" value="100"/>
   <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint('defult',document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
   <script>
-
-  const ClickMode = {
-	  None: 0,
-	  Point: 1,
-	  Polyline: 2,
-	  Polygon: 3
-  }
 
   const handler = new Cesium.ScreenSpaceEventHandler();
 
@@ -430,11 +423,11 @@
     var pickedObject = scene.pick(click.position); // pick the object the mouse clicked on 
     if (Cesium.defined(pickedObject))
     {
-      var selectedpolypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(pickedObject.id.polygon.hierarchy._value.positions);
-      selectedpolypoints.forEach(point => {
-        point.longitude = point.longitude * 180 / Math.PI;
-        point.latitude = point.latitude * 180 / Math.PI;
-      });
+      // var selectedpolypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(pickedObject.id.polygon.hierarchy._value.positions);
+      // selectedpolypoints.forEach(point => {
+      //   point.longitude = point.longitude * 180 / Math.PI;
+      //   point.latitude = point.latitude * 180 / Math.PI;
+      // });
       entities.removeById(pickedObject.id._id); // delete the object set to be deleted (been makred as noted to test finding selected polygon points)
     }
 
