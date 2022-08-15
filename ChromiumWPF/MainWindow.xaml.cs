@@ -350,5 +350,9 @@ namespace ChromiumWPF {
 
         }
 
+        private void Refresh(object sender, RoutedEventArgs e) {
+            defaultBrowser.Reload();
+        }
+
     }
 }

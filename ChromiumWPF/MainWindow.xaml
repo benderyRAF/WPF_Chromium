@@ -14,8 +14,9 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         
         <Grid Grid.Row="0">
@@ -37,14 +38,19 @@
             </Menu>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
+            <Button Width="40" Height="40" Margin="10, 0, 0, 0"  Click="Refresh">
+                <Image Source="Images/Refresh.png"/>
+            </Button>
+        </Grid>
+        
+        <Grid Grid.Row="1" Grid.Column="1">
             <cefSharp:ChromiumWebBrowser
                 Name="defaultBrowser"
                 Address="http://127.0.0.1:5500/index.html"
-                Grid.Column="1"
                 PreviewMouseDown="CesiumClick"/>
         </Grid>
-        <GroupBox Grid.Row="1" Grid.Column="1">
+        <GroupBox Grid.Row="1" Grid.Column="2">
             <StackPanel x:Name="actionStack" Visibility="Collapsed">
 
                 <Label x:Name="actionLabel" FontSize="30" Foreground="White" HorizontalAlignment="Center"/>
@@ -96,5 +102,53 @@
             </StackPanel>
         </GroupBox>
 
+        <Grid Grid.Row="1" Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser00" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser01" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser10" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser11" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser20" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser21" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="3" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser30" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="3" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser31" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="4" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser40" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+            <Grid Grid.Row="4" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser41" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+            </Grid>
+
+        </Grid>
+        
     </Grid>
 </Window>

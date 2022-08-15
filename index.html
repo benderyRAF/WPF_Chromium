@@ -9,7 +9,7 @@
 </head>
 <style>
   .map {
-    height: 800px;
+    height: 95vh;
     width: 100%;
   }
 </style>
@@ -22,13 +22,6 @@
   <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint('defult',document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
   <script>
 
-  const ClickMode = {
-	  None: 0,
-	  Point: 1,
-	  Polyline: 2,
-	  Polygon: 3
-  }
-
   const handler = new Cesium.ScreenSpaceEventHandler();
 
   var mousePosition;
@@ -36,7 +29,7 @@
 
   var holderPolygon = null;
   var holderPoints = [];
-
+  var holderPoint = -2;
 
 
   var ol2d = new ol.Map({
@@ -334,9 +327,22 @@
       holderPolygon = pickedObject;
       var points = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(holderPolygon.id.polygon.hierarchy.getValue().positions);
       
+      var cameraPosition = scene.camera.positionWC;
+      var ellipsoidPosition = scene.globe.ellipsoid.scaleToGeodeticSurface(cameraPosition);
+      var cameraHeight = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(cameraPosition, ellipsoidPosition, new Cesium.Cartesian3()));
+
+      position = convertScreenPixelToLocation(mousePosition);
+      pointCount = -2;
       points.forEach(point => {
+
+        pointCount += 2;
+        if (Math.sqrt(Math.pow(position.longitude - point.longitude * 180 / Math.PI, 2) + Math.pow(position.latitude - point.latitude * 180 / Math.PI, 2)) < cameraHeight / 5000000) {
+          holderPoint = pointCount;
+        }
+
         holderPoints.push(point.longitude * 180 / Math.PI)
         holderPoints.push(point.latitude * 180 / Math.PI)
+
       });
 
       holderPolygon.id.polygon.hierarchy = new Cesium.CallbackProperty(() => {
@@ -344,6 +350,7 @@
           Cesium.Cartesian3.fromDegreesArray(holderPoints)
         )
       }, false)
+
       scene.screenSpaceCameraController.enableRotate = false
 
     }
@@ -364,13 +371,19 @@
       var deltaX = endPosition.longitude - startPosition.longitude
       var deltaY = endPosition.latitude - startPosition.latitude
 
-      for (let i = 0; i < holderPoints.length; i += 2) {
-        holderPoints[i] = holderPoints[i]  + deltaX
-        holderPoints[i + 1] = holderPoints[i + 1]  + deltaY
+      if (holderPoint == -2) {
+        for (let i = 0; i < holderPoints.length; i += 2) {
+          holderPoints[i] = holderPoints[i]  + deltaX
+          holderPoints[i + 1] = holderPoints[i + 1]  + deltaY
+        }
+      }
+      else {
+        holderPoints[holderPoint] = holderPoints[holderPoint]  + deltaX
+        holderPoints[holderPoint + 1] = holderPoints[holderPoint + 1]  + deltaY
       }
 
     }
-
+    
   }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   
   // Leaves polygon.
@@ -378,38 +391,43 @@
 
     event.preventDefault(); // disable mouse action to not move screen
 
-    var points = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(holderPolygon.id.polygon.hierarchy.getValue().positions);
-    var newPoints = [];
+    if (Cesium.defined(holderPolygon)) {
 
-    points.forEach(point => {
-      newPoints.push(point.longitude * 180 / Math.PI)
-      newPoints.push(point.latitude * 180 / Math.PI)
-    });
+      var points = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(holderPolygon.id.polygon.hierarchy.getValue().positions);
+      var newPoints = [];
 
-    holderPolygon.id.polygon.hierarchy = new Cesium.CallbackProperty(() => {
-      return new Cesium.PolygonHierarchy(
-        Cesium.Cartesian3.fromDegreesArray(newPoints)
-      )
-    }, false)
+      points.forEach(point => {
+        newPoints.push(point.longitude * 180 / Math.PI)
+        newPoints.push(point.latitude * 180 / Math.PI)
+      });
 
-    holderPolygon = null;
-    holderPoints = [];
-    scene.screenSpaceCameraController.enableRotate = true
+      holderPolygon.id.polygon.hierarchy = new Cesium.CallbackProperty(() => {
+        return new Cesium.PolygonHierarchy(
+          Cesium.Cartesian3.fromDegreesArray(newPoints)
+        )
+      }, false)
+
+      holderPolygon = null;
+      holderPoints = [];
+      holderPoint = -2;
+      scene.screenSpaceCameraController.enableRotate = true;
+
+    }
 
   }, Cesium.ScreenSpaceEventType.LEFT_UP);
 
-  //double click on entitiy object deletes the object
+  // double click on entitiy object deletes the object
   handler.setInputAction(function(click) {
 
     event.preventDefault(); // disable mouse action to not move screen
     var pickedObject = scene.pick(click.position); // pick the object the mouse clicked on 
     if (Cesium.defined(pickedObject))
     {
-      var selectedpolypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(pickedObject.id.polygon.hierarchy._value.positions);
-      selectedpolypoints.forEach(point => {
-        point.longitude = point.longitude * 180 / Math.PI;
-        point.latitude = point.latitude * 180 / Math.PI;
-      });
+      // var selectedpolypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(pickedObject.id.polygon.hierarchy._value.positions);
+      // selectedpolypoints.forEach(point => {
+      //   point.longitude = point.longitude * 180 / Math.PI;
+      //   point.latitude = point.latitude * 180 / Math.PI;
+      // });
       entities.removeById(pickedObject.id._id); // delete the object set to be deleted (been makred as noted to test finding selected polygon points)
     }
 
