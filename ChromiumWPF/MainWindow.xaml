@@ -102,7 +102,7 @@
             </StackPanel>
         </GroupBox>
 
-        <Grid Grid.Row="1" Grid.Column="0">
+        <Grid Grid.Row="1" Grid.Column="0" Background="White">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
@@ -118,34 +118,34 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="0" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser00" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser00" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="0" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser01" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser01" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser10" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser10" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser11" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser11" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser20" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser20" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser21" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser21" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser30" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser30" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser31" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser31" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="4" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser40" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser40" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
             <Grid Grid.Row="4" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser41" Address="file:///C:/Users/SHONDIM/Desktop/a.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser41" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
             </Grid>
 
         </Grid>
