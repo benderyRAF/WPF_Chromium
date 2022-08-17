@@ -242,7 +242,7 @@ function websocketServerConnect() {
     peer_id = default_peer_id || getOurId();
     ws_port = ws_port || '8443';
     if (window.location.protocol.startsWith ("file")) {
-        ws_server = ws_server || "127.0.0.1";
+        ws_server = ws_server || "192.168.136.136";
     } else if (window.location.protocol.startsWith ("http")) {
         ws_server = ws_server || window.location.hostname;
     } else {
