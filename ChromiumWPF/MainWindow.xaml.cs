@@ -40,7 +40,10 @@ namespace ChromiumWPF {
 
             // Calls function in cesium js.
             var frame = defaultBrowser.GetMainFrame();
-            savedCommands = savedCommands + command;
+            if (!command.Contains("addPolygon"))
+            {
+                savedCommands = savedCommands + command;
+            }
             frame.EvaluateScriptAsync(command, null);
 
         }
@@ -203,6 +206,28 @@ namespace ChromiumWPF {
                     break;
 
                 case Action.ExportActions:
+                    // Calls function in cesium js.
+                    var frame = defaultBrowser.GetMainFrame();
+                    var task = frame.EvaluateScriptAsync("printToExport()", null);
+
+                    // Gets value retured from function.
+                    task.ContinueWith(t => {
+                        if (!t.IsFaulted)
+                        {
+
+                            var response = t.Result;
+                            // Gets value, (json)
+                            string EvaluateJavaScriptResult = response.Result?.ToString();
+
+                            if (EvaluateJavaScriptResult == null)
+                            { return; }
+                            else
+                            {
+                                savedCommands += EvaluateJavaScriptResult;
+                            }
+
+                        }
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
                     File.WriteAllText(urlStackTextbox.Text, savedCommands);
                     break;
                 case Action.ImportActions:
@@ -352,6 +377,7 @@ namespace ChromiumWPF {
 
         private void Refresh(object sender, RoutedEventArgs e) {
             defaultBrowser.Reload();
+            savedCommands = "";
         }
 
     }

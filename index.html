@@ -147,7 +147,7 @@
             Cesium.Cartesian3.fromDegreesArray(points)
           )
         }, false),
-        height: 3000.0,
+        height: 2000.0,
         extrudedHeight: height,
         outline: true,
         outlineColor: Cesium.Color.WHITE,
@@ -432,7 +432,26 @@
     }
 
   }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-
+function printToExport()
+{
+  var saving_string = "";
+  for (let i = 0; i < entities.values.length; i++) {
+    const element = entities.values[i];
+    polypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(element._polygon._hierarchy.getValue().positions);
+    var creation_string = "addPolygon(["; 
+    polypoints.forEach(point => {
+      creation_string += (point.longitude * 180 / Math.PI).toString();
+      creation_string += ", ";
+      creation_string += (point.latitude * 180 / Math.PI).toString();
+      creation_string += ", ";
+      });
+      creation_string += "]);"
+      console.log(creation_string);
+      saving_string += creation_string; 
+      saving_string += " ";  
+  }
+  return saving_string;
+}
 </script>
 </body>
 </html>
