@@ -73,11 +73,16 @@ namespace ChromiumWPF {
 
                 case "Set location":
                     action = Action.SetLocation;
+                    pointIdText.Visibility = Visibility.Collapsed;
+                    pointIdTextbox.Visibility = Visibility.Collapsed;
                     pointStack.Visibility = Visibility.Visible;
                     break;
 
                 case "Add point":
                     action = Action.AddPoint;
+
+                    pointIdText.Visibility = Visibility.Visible;
+                    pointIdTextbox.Visibility = Visibility.Visible;
                     pointStack.Visibility = Visibility.Visible;
                     break;
 
@@ -114,6 +119,7 @@ namespace ChromiumWPF {
 
                 case "Load structure model":
                     action = Action.LoadStructureModel;
+                    ModelMenu.Visibility = Visibility.Collapsed;
                     urlStack.Visibility = Visibility.Visible;
                     break;
 
@@ -143,7 +149,6 @@ namespace ChromiumWPF {
         }
 
         private void Approve(object sender, RoutedEventArgs e) {
-
             switch (action) {
 
                 case Action.SetLocation: // Moves camera to position.
@@ -234,7 +239,6 @@ namespace ChromiumWPF {
                     string importedCalls = File.ReadAllText(urlStackTextbox.Text);
                     JsCall(importedCalls);
                     break;
-
             }
 
             // Reseting all textboxes to empty string.
@@ -250,7 +254,18 @@ namespace ChromiumWPF {
                 }
             }
             action = Action.None;
+            actionLabel.Content = "";
+            actionStack.Visibility = Visibility.Collapsed;
+            pointStack.Visibility = Visibility.Collapsed;
+            pointsStack.Visibility = Visibility.Collapsed;
+            urlStack.Visibility = Visibility.Collapsed;
 
+            urlTextblock.Visibility = Visibility.Collapsed;
+            urlTextbox.Visibility = Visibility.Collapsed;
+
+            widthTextblock.Visibility = Visibility.Collapsed;
+            widthTextbox.Visibility = Visibility.Collapsed;
+            opacitySlider.Visibility = Visibility.Collapsed;
         }
 
         private void ClearPoints() {
