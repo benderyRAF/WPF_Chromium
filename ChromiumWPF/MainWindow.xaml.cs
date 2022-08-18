@@ -189,15 +189,15 @@ namespace ChromiumWPF {
                     ComboBoxItem selected = (ComboBoxItem)ModelMenu.SelectedItem;
                     if (selected.Content.ToString() == "Drone")
                     {
-                        modelurl = "./Drone.glb";
+                        modelurl = "./3dmodels/Drone.glb";
                     }
                     else if (selected.Content.ToString() == "Plane")
                     {
-                        modelurl = "./Plane.glb";
+                        modelurl = "./3dmodels/Plane.glb";
                     }
                     else
                     {
-                        modelurl = "./house.glb";
+                        modelurl = "./3dmodels/house.glb";
                     }
                     JsCall($"createModel('{modelurl}', {modellongitudeTextbox.Text}, {modellatitudeTextbox.Text}, {modelheightTextbox.Text});");
                     break;
