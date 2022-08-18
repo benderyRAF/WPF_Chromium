@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChromiumWPF"
         xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+
+
+    <!--variable "peerHtmlPath" houlds path to index.html-->
+    <Window.Resources>
+        <System:String x:Key="peerHtmlPath">file:///C:/msys64/home/ITAMARBI/WPF_Chromium/my-gst-webrtc/js/index.html</System:String>
+    </Window.Resources>
+
     <Grid Background="{DynamicResource wbBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -50,6 +58,7 @@
                 Address="http://127.0.0.1:5500/index.html"
                 PreviewMouseDown="CesiumClick"/>
         </Grid>
+        
         <GroupBox Grid.Row="1" Grid.Column="2">
             <StackPanel x:Name="actionStack" Visibility="Collapsed">
 
@@ -118,37 +127,35 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="0" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser00" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser00" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="0" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser01" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser01" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser10" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser10" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser11" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser11" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser20" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser20" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser21" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser21" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser30" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser30" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser31" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser31" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="4" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser40" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser40" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
             <Grid Grid.Row="4" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser41" Address="file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/index.html"/>
+                <cefSharp:ChromiumWebBrowser Name="browser41" Address="{StaticResource peerHtmlPath}"/>
             </Grid>
-
         </Grid>
-        
     </Grid>
 </Window>

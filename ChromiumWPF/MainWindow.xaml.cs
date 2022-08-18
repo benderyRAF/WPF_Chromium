@@ -34,6 +34,8 @@ namespace ChromiumWPF {
 
         public MainWindow() {
             InitializeComponent();
+
+
         }
 
         private void JsCall(string command) {
