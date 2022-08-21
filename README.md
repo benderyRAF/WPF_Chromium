@@ -37,4 +37,16 @@ or by enabaling CORS (more complicated and might be dangerous)
 Run the WPF project in Visual studio
 
 ## GST website setup
-TBD
+WebRTC works with a signalling server and peers:
+![image](https://user-images.githubusercontent.com/88430393/185790335-9343797a-cb7b-4a6d-9b1a-252a6e66405b.png)
+
+Run simple_server.py. This is the signalling server which establishes a connection between the peers.
+every instance of my-gts-webrtc/js/index.html is a peer.
+and my-gts-webrtc/webrtc-sendrecv.py is the second peer.
+
+After running the WPF project in visual studio, ensure that the status of each html is "Registered with server, waiting for call", and note the id.
+Then run my-gts-webrtc/webrtc-sendrecv.py with the address of the signalling server, for example: `python3 webrtc-sendrecv.py --server wss://localhost:8443 YOUR-ID`
+
+Note that you can use the demo page: https://webrtc.nirbheek.in/ for which you don't need a signalling server. in that case, run the script like that:
+`python3 webrtc-sendrecv.py YOUR-ID`. You can change path to index.html and url of signalling server in MainWindow.xaml under Window.Resources tag.
+
