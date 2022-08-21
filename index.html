@@ -85,6 +85,7 @@
 
   }, false);
 
+  
   //Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
   var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
   
@@ -452,6 +453,18 @@ function printToExport()
   }
   return saving_string;
 }
+
+function getAltitOfPoint(pointID) { // will only work with points in terrain data provided
+  if (!(pointID in pointDictionary))
+  { return "this point id doesnt exist" } // Does point exist.
+  var height_data;
+  //gets altitute of the point (async)
+  height_data = Cesium.sampleTerrain(scene.terrainProvider, 11, [Cesium.Cartographic.fromCartesian(pointDictionary[pointID].position)]).then(function(samples) {
+    return samples[0].height;
+  });
+  return height_data; // returns promise of height data
+}
+
 </script>
 </body>
 </html>
