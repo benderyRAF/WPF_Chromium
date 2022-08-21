@@ -19,12 +19,14 @@ using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using CefSharp.Handler;
 
 namespace ChromiumWPF {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class MainWindow : Window
+    {
         string savedCommands = "";
         enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint, ExportActions, ImportActions }
 
@@ -32,13 +34,18 @@ namespace ChromiumWPF {
         private readonly List<TextBox> points = new List<TextBox>();
         private readonly List<JObject> polyPoints = new List<JObject>();
 
-        public MainWindow() {
+        private static string signallingServerUrl;
+
+        public MainWindow()
+        {
             InitializeComponent();
 
-
+            signallingServerUrl = (string)this.Resources["signallingServerUrl"];
+            this.browser00.RequestHandler = new ExampleRequestHandler(signallingServerUrl);
         }
 
-        private void JsCall(string command) {
+        private void JsCall(string command)
+        {
 
             // Calls function in cesium js.
             var frame = defaultBrowser.GetMainFrame();
@@ -50,7 +57,8 @@ namespace ChromiumWPF {
 
         }
 
-        private void ChooseAction(object sender, RoutedEventArgs e) {
+        private void ChooseAction(object sender, RoutedEventArgs e)
+        {
 
             string headerAction = ((MenuItem)sender).Header.ToString();
             actionLabel.Content = headerAction;
@@ -71,7 +79,8 @@ namespace ChromiumWPF {
             heightTextbox.Tag = "LastInStack";
             urlTextbox.Tag = "";
 
-            switch (headerAction) { // Sets action type.
+            switch (headerAction)
+            { // Sets action type.
 
                 case "Set location":
                     action = Action.SetLocation;
@@ -146,12 +155,15 @@ namespace ChromiumWPF {
 
         }
 
-        private void ModeSwitch(object sender, RoutedEventArgs e) {
+        private void ModeSwitch(object sender, RoutedEventArgs e)
+        {
             JsCall($"modeSwitch();"); // Switch camera view 2D/3D.
         }
 
-        private void Approve(object sender, RoutedEventArgs e) {
-            switch (action) {
+        private void Approve(object sender, RoutedEventArgs e)
+        {
+            switch (action)
+            {
 
                 case Action.SetLocation: // Moves camera to position.
                     JsCall($"moveTo({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
@@ -207,7 +219,7 @@ namespace ChromiumWPF {
                 case Action.LoadStructureModel:
                     JsCall($"loadStructureModel('{urlStackTextbox.Text}');");
                     break;
-                
+
                 case Action.MovePoint:
                     JsCall($"movePoint('{pointIdTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
                     break;
@@ -218,7 +230,8 @@ namespace ChromiumWPF {
                     var task = frame.EvaluateScriptAsync("printToExport()", null);
 
                     // Gets value retured from function.
-                    task.ContinueWith(t => {
+                    task.ContinueWith(t =>
+                    {
                         if (!t.IsFaulted)
                         {
 
@@ -244,11 +257,15 @@ namespace ChromiumWPF {
             }
 
             // Reseting all textboxes to empty string.
-            foreach(UIElement element in actionStack.Children) {
-                if (element is StackPanel stackPanel) {
+            foreach (UIElement element in actionStack.Children)
+            {
+                if (element is StackPanel stackPanel)
+                {
 
-                    foreach (UIElement element2 in stackPanel.Children) {
-                        if (element2 is TextBox textBox) {
+                    foreach (UIElement element2 in stackPanel.Children)
+                    {
+                        if (element2 is TextBox textBox)
+                        {
                             textBox.Text = "";
                         }
                     }
@@ -270,11 +287,13 @@ namespace ChromiumWPF {
             opacitySlider.Visibility = Visibility.Collapsed;
         }
 
-        private void ClearPoints() {
+        private void ClearPoints()
+        {
 
             // Resets polystack by removing all point inputs.
             int childCount = pointsStack.Children.Count;
-            for (int i = 0; i < points.Count() / 2; i++) {
+            for (int i = 0; i < points.Count() / 2; i++)
+            {
                 pointsStack.Children.RemoveAt(childCount - 1 - 3 * i);
                 pointsStack.Children.RemoveAt(childCount - 2 - 3 * i);
                 pointsStack.Children.RemoveAt(childCount - 3 - 3 * i);
@@ -283,10 +302,12 @@ namespace ChromiumWPF {
 
         }
 
-        private void AddPointInput(object sender, RoutedEventArgs e) {
+        private void AddPointInput(object sender, RoutedEventArgs e)
+        {
 
             // Adds point input for polyshape.
-            TextBlock newTextBlock = new TextBlock {
+            TextBlock newTextBlock = new TextBlock
+            {
                 Text = $"Point {points.Count / 2 + 1}",
                 FontSize = 15,
                 Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255))
@@ -299,7 +320,8 @@ namespace ChromiumWPF {
             newTextBoxY.KeyDown += NextField;
             newTextBoxY.Tag = "LastInStack";
 
-            if (pointsStack.Children[pointsStack.Children.Count - 1] is TextBox textBox) {
+            if (pointsStack.Children[pointsStack.Children.Count - 1] is TextBox textBox)
+            {
                 textBox.Tag = "";
             }
 
@@ -312,9 +334,11 @@ namespace ChromiumWPF {
 
         }
 
-        private void NextField(object sender, KeyEventArgs e) {
+        private void NextField(object sender, KeyEventArgs e)
+        {
 
-            if (e.Key == Key.Enter) { // Focuses on next textbox if pressed enter.
+            if (e.Key == Key.Enter)
+            { // Focuses on next textbox if pressed enter.
 
                 TextBox textBox = (TextBox)sender;
                 StackPanel parent = (StackPanel)textBox.Parent;
@@ -322,21 +346,25 @@ namespace ChromiumWPF {
                 int index = parent.Children.IndexOf(textBox);
                 string tag = ((TextBox)parent.Children[index]).Tag?.ToString();
 
-                if (tag == "LastInStack") { // If last input, approve automatically.
+                if (tag == "LastInStack")
+                { // If last input, approve automatically.
                     Approve(null, null);
                     return;
                 }
 
-                try {
+                try
+                {
                     index += parent.Children[index + 1] is TextBox ? 1 : 2; // Find next textbox to focus on.
                     parent.Children[index].Focus();
-                } catch { /* Out of range! */ }
-                
+                }
+                catch { /* Out of range! */ }
+
             }
 
         }
 
-        private void CesiumClick(object sender, MouseButtonEventArgs e) {
+        private void CesiumClick(object sender, MouseButtonEventArgs e)
+        {
 
             if (action != Action.AddPoint
              && action != Action.Addpolyline
@@ -345,18 +373,22 @@ namespace ChromiumWPF {
             // Calls function in cesium js.
             var frame = defaultBrowser.GetMainFrame();
             var task = frame.EvaluateScriptAsync("addPointByClick()", null);
-            
+
             // Gets value retured from function.
-            task.ContinueWith(t => {
-                if (!t.IsFaulted) {
+            task.ContinueWith(t =>
+            {
+                if (!t.IsFaulted)
+                {
 
                     var response = t.Result;
                     // Gets value, (json)
                     string EvaluateJavaScriptResult = response.Result?.ToString();
 
                     if (EvaluateJavaScriptResult == null) return;
-                    if (action != Action.AddPoint) {
-                        if (action == Action.AddPolygon & e.ClickCount == 2) {
+                    if (action != Action.AddPoint)
+                    {
+                        if (action == Action.AddPolygon & e.ClickCount == 2)
+                        {
                             Console.WriteLine(EvaluateJavaScriptResult);
                         }
                         polyPoints.Add(JObject.Parse(EvaluateJavaScriptResult));
@@ -367,11 +399,13 @@ namespace ChromiumWPF {
 
         }
 
-        private string BuildPointsArray(List<JObject> points) {
+        private string BuildPointsArray(List<JObject> points)
+        {
 
             // Builds array of points, format: [x, y, x, y, x, y, ...].
             string pointArray = "[";
-            points.ForEach(point => {
+            points.ForEach(point =>
+            {
                 pointArray += point["position"]["longitude"] + ",";
                 pointArray += point["position"]["latitude"] + (point == points.Last() ? "]" : ",");
             });
@@ -380,11 +414,13 @@ namespace ChromiumWPF {
 
         }
 
-        private string BuildIdsArray(List<JObject> points) {
+        private string BuildIdsArray(List<JObject> points)
+        {
 
             // Builds array of ids, format: [id1, id2, id3, ...].
             string pointArray = "[";
-            points.ForEach(point => {
+            points.ForEach(point =>
+            {
                 pointArray += $"'{point["id"]}'{(point == points.Last() ? "]" : ",")}";
             });
 
@@ -392,10 +428,50 @@ namespace ChromiumWPF {
 
         }
 
-        private void Refresh(object sender, RoutedEventArgs e) {
+        private void Refresh(object sender, RoutedEventArgs e)
+        {
             defaultBrowser.Reload();
             savedCommands = "";
         }
+    }
 
+
+
+    //this class overrides RequestHandler:OnCertificateError function,
+    //in order to allow invalid certificates when first connecting to signalling server with https.
+    public class ExampleRequestHandler : RequestHandler
+    {
+        private string signallingServerUrl;
+
+        public ExampleRequestHandler(string signallingServerUrl)
+        {
+            this.signallingServerUrl = signallingServerUrl;
+        }
+
+        protected override bool OnCertificateError(IWebBrowser chromiumWebBrowser, IBrowser browser, CefErrorCode errorCode, string requestUrl, ISslInfo sslInfo, IRequestCallback callback)
+        {
+            //Return true and call IRequestCallback.Continue() at a later time to continue or cancel the request.
+            //In this instance we'll use a Task, typically you'd invoke a call to the UI Thread and display a Dialog to the user
+            Task.Run(() =>
+            {
+                //NOTE: When executing the callback in an async fashion need to check to see if it's disposed
+                if (!callback.IsDisposed)
+                {
+                    if (requestUrl == this.signallingServerUrl)
+                    {
+                        using (callback)
+                        {
+                            //We'll allow the invalid certificate
+                            callback.Continue(true);
+                        }
+                    }
+                    else
+                    {
+                        callback.Continue(false);
+                    }
+                }
+            });
+            return true;
+        }
     }
 }
