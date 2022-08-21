@@ -20,6 +20,7 @@ using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using CefSharp.Handler;
+using System.Threading;
 
 namespace ChromiumWPF {
     /// <summary>
@@ -28,7 +29,7 @@ namespace ChromiumWPF {
     public partial class MainWindow : Window
     {
         string savedCommands = "";
-        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint, ExportActions, ImportActions }
+        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint, getAltitude, ExportActions, ImportActions }
 
         private Action action = Action.None;
         private readonly List<TextBox> points = new List<TextBox>();
@@ -138,6 +139,11 @@ namespace ChromiumWPF {
                     action = Action.MovePoint;
                     pointStack.Visibility = Visibility.Visible;
                     break;
+                case "Get altitude of point":
+                    action = Action.getAltitude;
+                    pointStack.Visibility = Visibility.Visible;
+                    break;
+
 
                 case "Clear points":
                     JsCall($"clearPoints();");
@@ -223,14 +229,46 @@ namespace ChromiumWPF {
                 case Action.MovePoint:
                     JsCall($"movePoint('{pointIdTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
                     break;
+                case Action.getAltitude:
+                    // Calls function in cesium js.
+                    var frame = defaultBrowser.GetMainFrame();
+                    if (pointIdTextbox.Text.Length == 0)
+                    {
+                        JsCall($"getAltitOfPointByLocation({ longitudeTextbox.Text}, { latitudeTextbox.Text});");
+                    }
+                    else
+                    {
+                        JsCall($"getAltitOfPointById(\"{pointIdTextbox.Text}\");");
+                    }
+                    Thread.Sleep(1000);
+                    var task = frame.EvaluateScriptAsync("getAltData()");
+                    // Gets value retured from function.
+                    task.ContinueWith(t =>
+                    {
+                        if (!t.IsFaulted)
+                        {
+
+                            var response = t.Result;
+                            // Gets value, (json)
+                            string EvaluateJavaScriptResult = response.Result?.ToString();
+                            if (EvaluateJavaScriptResult == null)
+                            { return; }
+                            else
+                            {
+                                MessageBox.Show("the altitude result: " + EvaluateJavaScriptResult);
+                            }
+
+                        }
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                    break;
 
                 case Action.ExportActions:
                     // Calls function in cesium js.
-                    var frame = defaultBrowser.GetMainFrame();
-                    var task = frame.EvaluateScriptAsync("printToExport()", null);
+                    var exportframe = defaultBrowser.GetMainFrame();
+                    var exporttask = exportframe.EvaluateScriptAsync("printToExport()", null);
 
                     // Gets value retured from function.
-                    task.ContinueWith(t =>
+                    exporttask.ContinueWith(t =>
                     {
                         if (!t.IsFaulted)
                         {

@@ -20,6 +20,7 @@
   <input id="b" type="number" value="32.856909"/>
   <input id="c" type="number" value="100"/>
   <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint('defult',document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
+  <input id="altData" hidden>;
   <script>
 
   const handler = new Cesium.ScreenSpaceEventHandler();
@@ -457,21 +458,20 @@ function printToExport()
 function getAltitOfPointById(pointID) { // will only work with points in terrain data provided
   if (!(pointID in pointDictionary))
   { return "this point id doesnt exist" } // Does point exist.
-  var height_data;
   //gets altitute of the point (async)
-  height_data = Cesium.sampleTerrain(scene.terrainProvider, 11, [Cesium.Cartographic.fromCartesian(pointDictionary[pointID].position)]).then(function(samples) {
-    return samples[0].height;
+  Cesium.sampleTerrain(scene.terrainProvider, 11, [Cesium.Cartographic.fromCartesian(pointDictionary[pointID].position)]).then(function(samples) {
+    document.getElementById("altData").value = samples[0].height; 
   });
-  return height_data; // returns promise of height data
 }
 
 function getAltitOfPointByLocation(x,y) { // will only work with points in terrain data provided
-  var height_data;
   //gets altitute of the point (async)
-  height_data = Cesium.sampleTerrain(scene.terrainProvider, 11, [Cesium.Cartographic.fromDegrees(x,y)]).then(function(samples) {
-    return samples[0].height;
+  Cesium.sampleTerrain(scene.terrainProvider, 11, [Cesium.Cartographic.fromDegrees(x,y)]).then(function(samples) {
+  document.getElementById("altData").value = samples[0].height; 
   });
-  return height_data; // returns promise of height data
+}
+function getAltData(){
+  return document.getElementById("altData").value
 }
 </script>
 </body>

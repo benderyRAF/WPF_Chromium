@@ -42,6 +42,7 @@
                     <MenuItem Header="Create model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Load structure model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Move point" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Get altitude of point" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Clear points" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Export actions" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Import actions" Click="ChooseAction"></MenuItem>
