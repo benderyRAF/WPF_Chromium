@@ -16,11 +16,10 @@
 <body>
   <div id="map" class="map"></div>
   <input id="enable" type="button" value="Enable/disable" />
-  <input id="a" type="number" value="35.269343"/>
-  <input id="b" type="number" value="32.856909"/>
-  <input id="c" type="number" value="100"/>
-  <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint('defult',document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
-  <input id="altData" hidden>;
+
+  <a>altitude: </a>    <a id="realTimeAltData"></a> 
+  <input id="altData" hidden >
+
   <script>
 
   const handler = new Cesium.ScreenSpaceEventHandler();
@@ -360,23 +359,25 @@
   }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
   // Updates mouse position.
-  // Drags polygon if hold one.
   handler.setInputAction(function(movement) {
     
     // event.preventDefault(); // disable mouse action to not move screen
-    mousePosition = movement.endPosition
+    mousePosition = movement.endPosition;
 
+    updateAltitude(movement.startPosition);
+    
+  // Drags polygon if hold one.
     if (Cesium.defined(holderPolygon)) {
 
       startPosition = convertScreenPixelToLocation(movement.startPosition)
       endPosition = convertScreenPixelToLocation(movement.endPosition)
-      var deltaX = endPosition.longitude - startPosition.longitude
-      var deltaY = endPosition.latitude - startPosition.latitude
+      var deltaX = endPosition.longitude - startPosition.longitude;
+      var deltaY = endPosition.latitude - startPosition.latitude;
 
       if (holderPoint == -2) {
         for (let i = 0; i < holderPoints.length; i += 2) {
-          holderPoints[i] = holderPoints[i]  + deltaX
-          holderPoints[i + 1] = holderPoints[i + 1]  + deltaY
+          holderPoints[i] = holderPoints[i]  + deltaX;
+          holderPoints[i + 1] = holderPoints[i + 1]  + deltaY;
         }
       }
       else {
@@ -387,7 +388,19 @@
     }
     
   }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+  function updateAltitude(mousePos) {
+    const lon = convertScreenPixelToLocation(mousePos).longitude;
+    const lat = convertScreenPixelToLocation(mousePos).latitude;
   
+    //console.log();
+    Cesium.sampleTerrain(scene.terrainProvider, 9, [Cesium.Cartographic.fromDegrees(lon, lat)])
+    .then(function(samples) {
+       document.getElementById("realTimeAltData").innerHTML = samples[0].height;
+       });
+  }
+
+
+
   // Leaves polygon.
   handler.setInputAction(function(click) {
 
