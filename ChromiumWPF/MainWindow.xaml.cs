@@ -29,7 +29,7 @@ namespace ChromiumWPF {
     public partial class MainWindow : Window
     {
         string savedCommands = "";
-        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint, getAltitude, ExportActions, ImportActions }
+        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, AddCircle, CreateModel, LoadStructureModel, MovePoint, getAltitude, ExportActions, ImportActions }
 
         private Action action = Action.None;
         private readonly List<TextBox> points = new List<TextBox>();
@@ -69,7 +69,7 @@ namespace ChromiumWPF {
             pointStack.Visibility = Visibility.Collapsed;
             pointsStack.Visibility = Visibility.Collapsed;
             urlStack.Visibility = Visibility.Collapsed;
-
+            circleStack.Visibility = Visibility.Collapsed;
             urlTextblock.Visibility = Visibility.Collapsed;
             urlTextbox.Visibility = Visibility.Collapsed;
 
@@ -118,6 +118,11 @@ namespace ChromiumWPF {
                     urlTextbox.Visibility = Visibility.Visible;
                     heightTextbox.Tag = "";
                     urlTextbox.Tag = "LastInStack";
+                    break;
+
+                case "Add circle":
+                    action = Action.AddCircle;
+                    circleStack.Visibility = Visibility.Visible;
                     break;
 
                 case "Create model":
@@ -201,7 +206,9 @@ namespace ChromiumWPF {
                 case Action.AddImage:
                     JsCall($"addImage({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}, '{urlTextbox.Text}');");
                     break;
-
+                case Action.AddCircle:
+                    JsCall($"addCircle({circlelongitudeTextbox.Text}, {circlelatitudeTextbox.Text}, {circleheightTextbox.Text}, {semiMinorAxisTextbox.Text}, {semiMajorAxisTextbox.Text});");
+                    break;
                 case Action.CreateModel:
                     string modelurl = "";
                     Console.WriteLine(ModelMenu.SelectedItem.ToString());

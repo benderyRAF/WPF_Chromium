@@ -39,6 +39,7 @@
                     <MenuItem Header="Add polyline" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Add polygon" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Add image" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Add circle" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Create model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Load structure model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Move point" Click="ChooseAction"></MenuItem>
@@ -110,9 +111,21 @@
                         <ComboBoxItem>House</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
-
+                
+                <StackPanel x:Name="circleStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Longitude"/></TextBlock>
+                    <TextBox x:Name="circlelongitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Latitude"/></TextBlock>
+                    <TextBox x:Name="circlelatitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="circleheightTextbox" KeyDown="NextField"/>
+                    <TextBlock x:Name="semiMinorAxisTextblock" FontSize="15" Foreground="White"><Run Text="semiMinorAxis"/></TextBlock>
+                    <TextBox x:Name="semiMinorAxisTextbox" KeyDown="NextField"/>
+                    <TextBlock x:Name="semiMajorAxisTextblock" FontSize="15" Foreground="White"><Run Text="semiMajorAxis"/></TextBlock>
+                    <TextBox x:Name="semiMajorAxisTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                </StackPanel>
                 <Button Width="100" Height="50" FontSize="20" Background="Lime" Margin="0, 20" Click="Approve" Content="Approve"/>
-
+                
             </StackPanel>
         </GroupBox>
 
