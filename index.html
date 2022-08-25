@@ -9,13 +9,18 @@
 </head>
 <style>
   .map {
+<<<<<<< HEAD
     height: 800px;
+=======
+    height: 95vh;
+>>>>>>> develop
     width: 100%;
   }
 </style>
 <body>
   <div id="map" class="map"></div>
   <input id="enable" type="button" value="Enable/disable" />
+<<<<<<< HEAD
   <input id="a" type="number" value="35.269343"/>
   <input id="b" type="number" value="32.856909"/>
   <input id="c" type="number" value="100"/>
@@ -34,6 +39,24 @@
   var mousePosition;
   var pointDictionary = {}
 
+=======
+
+  <a style="color:white;">altitude: </a>    <a style="color:white;" id="realTimeAltData"></a> 
+  <input id="altData" hidden >
+
+  <script>
+
+  const handler = new Cesium.ScreenSpaceEventHandler();
+
+  var mousePosition;
+  var pointDictionary = {}
+
+  var holderPolygon = null;
+  var holderPoints = [];
+  var holderPoint = -2;
+
+
+>>>>>>> develop
   var ol2d = new ol.Map({
     target: 'map',
     view: new ol.View({
@@ -87,6 +110,10 @@
 
   }, false);
 
+<<<<<<< HEAD
+=======
+  
+>>>>>>> develop
   //Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
   var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
   
@@ -104,7 +131,12 @@
     var point = points.add({
       position : Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
       parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid),
+<<<<<<< HEAD
       color : Cesium.Color.CYAN
+=======
+      color : Cesium.Color.RED,
+      pixelSize : 10,
+>>>>>>> develop
     });
 
     // Adds point to points collection
@@ -143,10 +175,19 @@
     //adds polygon
     entities.add({
       polygon: {
+<<<<<<< HEAD
         hierarchy: new Cesium.PolygonHierarchy(
           Cesium.Cartesian3.fromDegreesArray(points)
         ),
         height: 3000.0,
+=======
+        hierarchy: new Cesium.CallbackProperty(() => {
+          return new Cesium.PolygonHierarchy(
+            Cesium.Cartesian3.fromDegreesArray(points)
+          )
+        }, false),
+        height: 2000.0,
+>>>>>>> develop
         extrudedHeight: height,
         outline: true,
         outlineColor: Cesium.Color.WHITE,
@@ -230,6 +271,10 @@
     viewer.trackedEntity = entity;
   }
 
+<<<<<<< HEAD
+=======
+  // Loads structure model to map. 3d tiles (json format)
+>>>>>>> develop
   function loadStructureModel(url) {
 
     const tileset = scene.primitives.add(new Cesium.Cesium3DTileset({
@@ -248,15 +293,23 @@
 
   }
 
+<<<<<<< HEAD
   function movePoint(id, x, y, z) {
 
     if (!(id in pointDictionary)) { return }
+=======
+  // Set new position to point by id.
+  function movePoint(id, x, y, z) {
+
+    if (!(id in pointDictionary)) { return } // Does point exist.
+>>>>>>> develop
 
     pointDictionary[id].position = Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
       parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid)
     
   }
 
+<<<<<<< HEAD
   handler.setInputAction(function(movement) {
     mousePosition = movement.endPosition
   }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -272,6 +325,9 @@
     
   }
 
+=======
+  // Convert mouse position on screen to (longitude,latitude) position.
+>>>>>>> develop
   function convertScreenPixelToLocation(mousePosition) {
 
     const ellipsoid = scene.globe.ellipsoid;
@@ -283,6 +339,7 @@
 
   }
 
+<<<<<<< HEAD
   function addPointByClick() {
     
     const selectedLocation = convertScreenPixelToLocation(mousePosition)
@@ -292,6 +349,21 @@
 
     return JSON.stringify({
       id: 'p1',
+=======
+  var clickId = 0;
+  function addPointByClick() {
+    
+    // Gets point position from mouse position.
+    const selectedLocation = convertScreenPixelToLocation(mousePosition)
+    id = `point_${clickId}`
+    clickId++;
+
+    addPoint(id, selectedLocation.longitude, selectedLocation.latitude, 0)
+
+    // Returns point's info to wpf.
+    return JSON.stringify({
+      id: id,
+>>>>>>> develop
       position: {
         longitude: selectedLocation.longitude,
         latitude: selectedLocation.latitude
@@ -300,18 +372,212 @@
 
   }
 
+<<<<<<< HEAD
   //double click on entitiy object deletes the object
   var handler2 = new Cesium.ScreenSpaceEventHandler(scene.canvas);
   handler2.setInputAction(function(click)
   {
+=======
+  function clearPoints(pointIds) {
+
+    console.log(pointIds)
+    clickId = 0;
+    pointIds.forEach(id => {
+      points.remove(pointDictionary[id]); 
+      delete pointDictionary[id];
+    });
+
+  }
+
+  function addCircle(x, y, z = 100, semiMinorAxis = 1000000, semiMajorAxis = 1000000) {
+    const greenCircle = viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(x, y, z),
+      ellipse: {
+        semiMinorAxis: semiMinorAxis,
+        semiMajorAxis: semiMajorAxis,
+        height: z,
+        material: Cesium.Color.GREEN,
+        outline: true, // height must be set for outline to display
+      },
+    });
+  }
+
+  // Pick polygon.
+  handler.setInputAction(function(click) {
+
+    event.preventDefault(); // disable mouse action to not move screen
+    var pickedObject = scene.pick(click.position); // pick the object the mouse clicked on 
+    if (Cesium.defined(pickedObject)) {
+
+      holderPolygon = pickedObject;
+      var points = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(holderPolygon.id.polygon.hierarchy.getValue().positions);
+      
+      var cameraPosition = scene.camera.positionWC;
+      var ellipsoidPosition = scene.globe.ellipsoid.scaleToGeodeticSurface(cameraPosition);
+      var cameraHeight = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(cameraPosition, ellipsoidPosition, new Cesium.Cartesian3()));
+
+      position = convertScreenPixelToLocation(mousePosition);
+      pointCount = -2;
+      points.forEach(point => {
+
+        pointCount += 2;
+        if (Math.sqrt(Math.pow(position.longitude - point.longitude * 180 / Math.PI, 2) + Math.pow(position.latitude - point.latitude * 180 / Math.PI, 2)) < cameraHeight / 5000000) {
+          holderPoint = pointCount;
+        }
+
+        holderPoints.push(point.longitude * 180 / Math.PI)
+        holderPoints.push(point.latitude * 180 / Math.PI)
+
+      });
+
+      holderPolygon.id.polygon.hierarchy = new Cesium.CallbackProperty(() => {
+        return new Cesium.PolygonHierarchy(
+          Cesium.Cartesian3.fromDegreesArray(holderPoints)
+        )
+      }, false)
+
+      scene.screenSpaceCameraController.enableRotate = false
+
+    }
+
+  }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+  // Updates mouse position.
+  handler.setInputAction(function(movement) {
+    
+    // event.preventDefault(); // disable mouse action to not move screen
+    mousePosition = movement.endPosition;
+
+    updateAltitude(movement.startPosition);
+    
+  // Drags polygon if hold one.
+    if (Cesium.defined(holderPolygon)) {
+
+      startPosition = convertScreenPixelToLocation(movement.startPosition)
+      endPosition = convertScreenPixelToLocation(movement.endPosition)
+      var deltaX = endPosition.longitude - startPosition.longitude;
+      var deltaY = endPosition.latitude - startPosition.latitude;
+
+      if (holderPoint == -2) {
+        for (let i = 0; i < holderPoints.length; i += 2) {
+          holderPoints[i] = holderPoints[i]  + deltaX;
+          holderPoints[i + 1] = holderPoints[i + 1]  + deltaY;
+        }
+      }
+      else {
+        holderPoints[holderPoint] = holderPoints[holderPoint]  + deltaX
+        holderPoints[holderPoint + 1] = holderPoints[holderPoint + 1]  + deltaY
+      }
+
+    }
+    
+  }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+  function updateAltitude(mousePos) {
+    const lon = convertScreenPixelToLocation(mousePos).longitude;
+    const lat = convertScreenPixelToLocation(mousePos).latitude;
+  
+    //console.log();
+    Cesium.sampleTerrain(scene.terrainProvider, 9, [Cesium.Cartographic.fromDegrees(lon, lat)])
+    .then(function(samples) {
+       document.getElementById("realTimeAltData").innerHTML = samples[0].height;
+       });
+  }
+
+
+
+  // Leaves polygon.
+  handler.setInputAction(function(click) {
+
+    event.preventDefault(); // disable mouse action to not move screen
+
+    if (Cesium.defined(holderPolygon)) {
+
+      var points = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(holderPolygon.id.polygon.hierarchy.getValue().positions);
+      var newPoints = [];
+
+      points.forEach(point => {
+        newPoints.push(point.longitude * 180 / Math.PI)
+        newPoints.push(point.latitude * 180 / Math.PI)
+      });
+
+      holderPolygon.id.polygon.hierarchy = new Cesium.CallbackProperty(() => {
+        return new Cesium.PolygonHierarchy(
+          Cesium.Cartesian3.fromDegreesArray(newPoints)
+        )
+      }, false)
+
+      holderPolygon = null;
+      holderPoints = [];
+      holderPoint = -2;
+      scene.screenSpaceCameraController.enableRotate = true;
+
+    }
+
+  }, Cesium.ScreenSpaceEventType.LEFT_UP);
+
+  // double click on entitiy object deletes the object
+  handler.setInputAction(function(click) {
+
+>>>>>>> develop
     event.preventDefault(); // disable mouse action to not move screen
     var pickedObject = scene.pick(click.position); // pick the object the mouse clicked on 
     if (Cesium.defined(pickedObject))
     {
+<<<<<<< HEAD
       entities.removeById(pickedObject.id._id);// delete the object set to be deleted
     }
   }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
+=======
+      // var selectedpolypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(pickedObject.id.polygon.hierarchy._value.positions);
+      // selectedpolypoints.forEach(point => {
+      //   point.longitude = point.longitude * 180 / Math.PI;
+      //   point.latitude = point.latitude * 180 / Math.PI;
+      // });
+      entities.removeById(pickedObject.id._id); // delete the object set to be deleted (been makred as noted to test finding selected polygon points)
+    }
+
+  }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+function printToExport()
+{
+  var saving_string = "";
+  for (let i = 0; i < entities.values.length; i++) {
+    const element = entities.values[i];
+    polypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(element._polygon._hierarchy.getValue().positions);
+    var creation_string = "addPolygon(["; 
+    polypoints.forEach(point => {
+      creation_string += (point.longitude * 180 / Math.PI).toString();
+      creation_string += ", ";
+      creation_string += (point.latitude * 180 / Math.PI).toString();
+      creation_string += ", ";
+      });
+      creation_string += "]);"
+      console.log(creation_string);
+      saving_string += creation_string; 
+      saving_string += " ";  
+  }
+  return saving_string;
+}
+
+function getAltitOfPointById(pointID) { // will only work with points in terrain data provided
+  if (!(pointID in pointDictionary))
+  { return "this point id doesnt exist" } // Does point exist.
+  //gets altitute of the point (async)
+  Cesium.sampleTerrain(scene.terrainProvider, 11, [Cesium.Cartographic.fromCartesian(pointDictionary[pointID].position)]).then(function(samples) {
+    document.getElementById("altData").value = samples[0].height; 
+  });
+}
+
+function getAltitOfPointByLocation(x,y) { // will only work with points in terrain data provided
+  //gets altitute of the point (async)
+  Cesium.sampleTerrain(scene.terrainProvider, 11, [Cesium.Cartographic.fromDegrees(x,y)]).then(function(samples) {
+  document.getElementById("altData").value = samples[0].height; 
+  });
+}
+function getAltData(){
+  return document.getElementById("altData").value
+}
+>>>>>>> develop
 </script>
 </body>
 </html>

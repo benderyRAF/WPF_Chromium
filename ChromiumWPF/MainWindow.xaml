@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChromiumWPF"
         xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+<<<<<<< HEAD
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+=======
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="792" WindowState="Maximized">
+
+
+    <!--variable "peerHtmlPath" houlds path to index.html"
+        variable "signallingServerUrl" has to be https to accept self-signed certificate
+        change values if needed-->
+    <Window.Resources>
+        <System:String x:Key="peerHtmlPath">file:///C:/msys64/home/ITAMARBI/WPF_Chromium/my-gst-webrtc/js/index.html</System:String>
+        <System:String x:Key="signallingServerUrl">https://192.168.136.138:8443/</System:String>
+    </Window.Resources>
+
+
+>>>>>>> develop
     <Grid Background="{DynamicResource wbBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -14,10 +31,18 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+<<<<<<< HEAD
             <ColumnDefinition Width="4*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         
+=======
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+>>>>>>> develop
         <Grid Grid.Row="0">
             <Menu Height="30" Margin="10" HorizontalAlignment="Left" Foreground="Black">
                 <MenuItem Header="Action" Width="100" Height="30" Background="Gray">
@@ -26,15 +51,27 @@
                     <MenuItem Header="Add polyline" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Add polygon" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Add image" Click="ChooseAction"></MenuItem>
+<<<<<<< HEAD
                     <MenuItem Header="Create model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Load structure model" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Move point" Click="ChooseAction"></MenuItem>
                     <MenuItem Header="Clear points" Click="ChooseAction"></MenuItem>
+=======
+                    <MenuItem Header="Add circle" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Create model" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Load structure model" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Move point" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Get altitude of point" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Clear points" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Export actions" Click="ChooseAction"></MenuItem>
+                    <MenuItem Header="Import actions" Click="ChooseAction"></MenuItem>
+>>>>>>> develop
                 </MenuItem>
                 <MenuItem Header="Mode switch" Width="100" Height="30" Background="Gray" Click="ModeSwitch"/>
             </Menu>
         </Grid>
 
+<<<<<<< HEAD
         <Grid Grid.Row="1">
             <cefSharp:ChromiumWebBrowser
                 Name="defaultBrowser"
@@ -43,12 +80,35 @@
                 PreviewMouseDown="CesiumClick"/>
         </Grid>
         <GroupBox Grid.Row="1" Grid.Column="1">
+=======
+        <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
+            <Button Width="40" Height="40" Margin="10, 0, 0, 0"  Click="Refresh">
+                <Image Source="Images/Refresh.png"/>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left">
+            <TextBlock x:Name="altTextBlock" FontSize="22" Text="Altitude: 9999" Foreground="White" VerticalAlignment="Center" Height="30" Margin="0,10,-24.8,10.4" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <cefSharp:ChromiumWebBrowser
+                Name="defaultBrowser"
+                Address="http://127.0.0.1:5500/index.html"
+                PreviewMouseDown="CesiumClick"/>
+        </Grid>
+
+        <GroupBox Grid.Row="1" Grid.Column="2">
+>>>>>>> develop
             <StackPanel x:Name="actionStack" Visibility="Collapsed">
 
                 <Label x:Name="actionLabel" FontSize="30" Foreground="White" HorizontalAlignment="Center"/>
 
                 <StackPanel x:Name="pointStack" Visibility="Collapsed">
+<<<<<<< HEAD
                     <TextBlock FontSize="15" Foreground="White"><Run Text="Id"/></TextBlock>
+=======
+                    <TextBlock x:Name="pointIdText" FontSize="15" Foreground="White"><Run Text="Id"/></TextBlock>
+>>>>>>> develop
                     <TextBox x:Name="pointIdTextbox" KeyDown="NextField"/>
                     <TextBlock FontSize="15" Foreground="White"><Run Text="Longitude"/></TextBlock>
                     <TextBox x:Name="longitudeTextbox" KeyDown="NextField"/>
@@ -74,10 +134,95 @@
                     <TextBox x:Name="urlStackTextbox" Tag="LastInStack" KeyDown="NextField"/>
                 </StackPanel>
 
+<<<<<<< HEAD
+=======
+                <StackPanel x:Name="DropdownStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Longitude"/></TextBlock>
+                    <TextBox x:Name="modellongitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Latitude"/></TextBlock>
+                    <TextBox x:Name="modellatitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="modelheightTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Models"/></TextBlock>
+                    <ComboBox x:Name="ModelMenu">
+                        <ComboBoxItem>Drone</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">Plane</ComboBoxItem>
+                        <ComboBoxItem>House</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel x:Name="circleStack" Visibility="Collapsed">
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Longitude"/></TextBlock>
+                    <TextBox x:Name="circlelongitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Latitude"/></TextBlock>
+                    <TextBox x:Name="circlelatitudeTextbox" KeyDown="NextField"/>
+                    <TextBlock FontSize="15" Foreground="White"><Run Text="Height"/></TextBlock>
+                    <TextBox x:Name="circleheightTextbox" KeyDown="NextField"/>
+                    <TextBlock x:Name="semiMinorAxisTextblock" FontSize="15" Foreground="White"><Run Text="semiMinorAxis"/></TextBlock>
+                    <TextBox x:Name="semiMinorAxisTextbox" KeyDown="NextField"/>
+                    <TextBlock x:Name="semiMajorAxisTextblock" FontSize="15" Foreground="White"><Run Text="semiMajorAxis"/></TextBlock>
+                    <TextBox x:Name="semiMajorAxisTextbox" Tag="LastInStack" KeyDown="NextField"/>
+                </StackPanel>
+>>>>>>> develop
                 <Button Width="100" Height="50" FontSize="20" Background="Lime" Margin="0, 20" Click="Approve" Content="Approve"/>
 
             </StackPanel>
         </GroupBox>
 
+<<<<<<< HEAD
+=======
+        <Grid Grid.Row="1" Grid.Column="0" Background="White">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0*" />
+                <!-- invisible row for browser00-->
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- browser00 is used to accept self-signed certificate of signalling server-->
+            <Grid Grid.Row="0" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser00" Visibility="Hidden" Address="{StaticResource signallingServerUrl}"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser10" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser11" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser20" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser21" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="3" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser30" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="3" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser31" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="4" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser40" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="4" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser41" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="5" Grid.Column="0">
+                <cefSharp:ChromiumWebBrowser Name="browser50" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+            <Grid Grid.Row="5" Grid.Column="1">
+                <cefSharp:ChromiumWebBrowser Name="browser51" Address="{StaticResource peerHtmlPath}"/>
+            </Grid>
+        </Grid>
+>>>>>>> develop
     </Grid>
 </Window>
