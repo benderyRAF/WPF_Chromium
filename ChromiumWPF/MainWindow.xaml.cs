@@ -40,11 +40,39 @@ namespace ChromiumWPF {
         public MainWindow()
         {
             InitializeComponent();
+            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            dispatcherTimer.Start();
 
+
+           
             signallingServerUrl = (string)this.Resources["signallingServerUrl"];
             this.browser00.RequestHandler = new ExampleRequestHandler(signallingServerUrl);
         }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            var frame = defaultBrowser.GetMainFrame();
+            var task = frame.EvaluateScriptAsync("document.getElementById(\"realTimeAltData\").innerHTML");
+            // Gets value retured from function.
+            task.ContinueWith(t =>
+            {
+                if (!t.IsFaulted)
+                {
 
+                    var response = t.Result;
+                    // Gets value, (json)
+                    string EvaluateJavaScriptResult = response.Result?.ToString();
+                    if (EvaluateJavaScriptResult == null)
+                    { return; }
+                    else
+                    {
+                        altTextBlock.Text = "Altitude: " + EvaluateJavaScriptResult;
+                    }
+
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
         private void JsCall(string command)
         {
 
