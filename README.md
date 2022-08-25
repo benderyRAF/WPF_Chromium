@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-> #### WPF_CESIUM
->
-> - Follow the steps on [THAT](https://github.com/shakedt1/3d-offline-map) git repo
-> - Replace the index.html with the one on this repo
-> - Run the index.html with visual studio code live run
-> - Run the WPF project in Visual studio
->
->  *Everything* should work perfectly.
-=======
 # WPF_CESIUM
 
 ## Website installation and setup:
@@ -68,4 +58,3 @@ Also Note that when running my-gts-webrtc/webrtc-sendrecv.py, signalling server 
 
 For further reading and help, visit : https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/master/webrtc. scripts under my-gts-webrtc/ was taken from that repo. 
 And also gstreamer documentation: https://gstreamer.freedesktop.org/documentation/tutorials/index.html?gi-language=c
->>>>>>> develop

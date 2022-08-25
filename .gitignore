@@ -348,8 +348,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-<<<<<<< HEAD
-=======
 /.metadata
 /Build
 /Cesium-*.zip
@@ -387,4 +385,3 @@ yarn.lock
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/shelf
->>>>>>> develop

@@ -9,37 +9,13 @@
 </head>
 <style>
   .map {
-<<<<<<< HEAD
-    height: 800px;
-=======
     height: 95vh;
->>>>>>> develop
     width: 100%;
   }
 </style>
 <body>
   <div id="map" class="map"></div>
   <input id="enable" type="button" value="Enable/disable" />
-<<<<<<< HEAD
-  <input id="a" type="number" value="35.269343"/>
-  <input id="b" type="number" value="32.856909"/>
-  <input id="c" type="number" value="100"/>
-  <input id="addpoints" type="button" value="ADD POINT" onclick="addPoint('defult',document.getElementById('a').value,document.getElementById('b').value,document.getElementById('c').value)"/>
-  <script>
-
-  const ClickMode = {
-	  None: 0,
-	  Point: 1,
-	  Polyline: 2,
-	  Polygon: 3
-  }
-
-  const handler = new Cesium.ScreenSpaceEventHandler();
-  var CurrentClickMode = ClickMode.None;
-  var mousePosition;
-  var pointDictionary = {}
-
-=======
 
   <a style="color:white;">altitude: </a>    <a style="color:white;" id="realTimeAltData"></a> 
   <input id="altData" hidden >
@@ -56,7 +32,6 @@
   var holderPoint = -2;
 
 
->>>>>>> develop
   var ol2d = new ol.Map({
     target: 'map',
     view: new ol.View({
@@ -110,10 +85,7 @@
 
   }, false);
 
-<<<<<<< HEAD
-=======
   
->>>>>>> develop
   //Cesium.sampleTerrain(scene.terrainProvider, 11, [pointOfInterest]);
   var points = scene.primitives.add(new Cesium.PointPrimitiveCollection());
   
@@ -131,12 +103,8 @@
     var point = points.add({
       position : Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
       parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid),
-<<<<<<< HEAD
-      color : Cesium.Color.CYAN
-=======
       color : Cesium.Color.RED,
       pixelSize : 10,
->>>>>>> develop
     });
 
     // Adds point to points collection
@@ -175,19 +143,12 @@
     //adds polygon
     entities.add({
       polygon: {
-<<<<<<< HEAD
-        hierarchy: new Cesium.PolygonHierarchy(
-          Cesium.Cartesian3.fromDegreesArray(points)
-        ),
-        height: 3000.0,
-=======
         hierarchy: new Cesium.CallbackProperty(() => {
           return new Cesium.PolygonHierarchy(
             Cesium.Cartesian3.fromDegreesArray(points)
           )
         }, false),
         height: 2000.0,
->>>>>>> develop
         extrudedHeight: height,
         outline: true,
         outlineColor: Cesium.Color.WHITE,
@@ -271,10 +232,7 @@
     viewer.trackedEntity = entity;
   }
 
-<<<<<<< HEAD
-=======
   // Loads structure model to map. 3d tiles (json format)
->>>>>>> develop
   function loadStructureModel(url) {
 
     const tileset = scene.primitives.add(new Cesium.Cesium3DTileset({
@@ -293,41 +251,17 @@
 
   }
 
-<<<<<<< HEAD
-  function movePoint(id, x, y, z) {
-
-    if (!(id in pointDictionary)) { return }
-=======
   // Set new position to point by id.
   function movePoint(id, x, y, z) {
 
     if (!(id in pointDictionary)) { return } // Does point exist.
->>>>>>> develop
 
     pointDictionary[id].position = Cesium.Cartographic.toCartesian( Cesium.Cartographic.fromDegrees(
       parseFloat(x), parseFloat(y), parseFloat(z), new Cesium.Cartographic()), ellipsoid)
     
   }
 
-<<<<<<< HEAD
-  handler.setInputAction(function(movement) {
-    mousePosition = movement.endPosition
-  }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-
-  onclick = () => {
-    
-    if (CurrentClickMode == ClickMode.None) { return }
-
-    const selectedLocation = convertScreenPixelToLocation(mousePosition)
-    console.log(selectedLocation)
-
-    addPoint('p1', selectedLocation.lng, selectedLocation.lat, 0)
-    
-  }
-
-=======
   // Convert mouse position on screen to (longitude,latitude) position.
->>>>>>> develop
   function convertScreenPixelToLocation(mousePosition) {
 
     const ellipsoid = scene.globe.ellipsoid;
@@ -339,17 +273,6 @@
 
   }
 
-<<<<<<< HEAD
-  function addPointByClick() {
-    
-    const selectedLocation = convertScreenPixelToLocation(mousePosition)
-    console.log(selectedLocation)
-
-    addPoint('p1', selectedLocation.longitude, selectedLocation.latitude, 0)
-
-    return JSON.stringify({
-      id: 'p1',
-=======
   var clickId = 0;
   function addPointByClick() {
     
@@ -363,7 +286,6 @@
     // Returns point's info to wpf.
     return JSON.stringify({
       id: id,
->>>>>>> develop
       position: {
         longitude: selectedLocation.longitude,
         latitude: selectedLocation.latitude
@@ -372,12 +294,6 @@
 
   }
 
-<<<<<<< HEAD
-  //double click on entitiy object deletes the object
-  var handler2 = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-  handler2.setInputAction(function(click)
-  {
-=======
   function clearPoints(pointIds) {
 
     console.log(pointIds)
@@ -518,17 +434,10 @@
   // double click on entitiy object deletes the object
   handler.setInputAction(function(click) {
 
->>>>>>> develop
     event.preventDefault(); // disable mouse action to not move screen
     var pickedObject = scene.pick(click.position); // pick the object the mouse clicked on 
     if (Cesium.defined(pickedObject))
     {
-<<<<<<< HEAD
-      entities.removeById(pickedObject.id._id);// delete the object set to be deleted
-    }
-  }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-
-=======
       // var selectedpolypoints = Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(pickedObject.id.polygon.hierarchy._value.positions);
       // selectedpolypoints.forEach(point => {
       //   point.longitude = point.longitude * 180 / Math.PI;
@@ -577,7 +486,6 @@ function getAltitOfPointByLocation(x,y) { // will only work with points in terra
 function getAltData(){
   return document.getElementById("altData").value
 }
->>>>>>> develop
 </script>
 </body>
 </html>

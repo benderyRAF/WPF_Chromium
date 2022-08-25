@@ -18,42 +18,23 @@ using CefSharp.Wpf;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
-<<<<<<< HEAD
-=======
 using System.IO;
 using CefSharp.Handler;
 using System.Threading;
->>>>>>> develop
 
 namespace ChromiumWPF {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-<<<<<<< HEAD
-    public partial class MainWindow : Window {
-
-        enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, CreateModel, LoadStructureModel, MovePoint }
-=======
     public partial class MainWindow : Window
     {
         string savedCommands = "";
         enum Action { None, SetLocation, AddPoint, Addpolyline, AddPolygon, AddImage, AddCircle, CreateModel, LoadStructureModel, MovePoint, getAltitude, ExportActions, ImportActions }
->>>>>>> develop
 
         private Action action = Action.None;
         private readonly List<TextBox> points = new List<TextBox>();
         private readonly List<JObject> polyPoints = new List<JObject>();
 
-<<<<<<< HEAD
-        public MainWindow() {
-            InitializeComponent();
-        }
-
-        private void JsCall(string command) {
-
-            // Calls function in cesium js.
-            var frame = defaultBrowser.GetMainFrame();
-=======
         private static string signallingServerUrl;
 
         public MainWindow()
@@ -101,17 +82,12 @@ namespace ChromiumWPF {
             {
                 savedCommands = savedCommands + command;
             }
->>>>>>> develop
             frame.EvaluateScriptAsync(command, null);
 
         }
 
-<<<<<<< HEAD
-        private void ChooseAction(object sender, RoutedEventArgs e) {
-=======
         private void ChooseAction(object sender, RoutedEventArgs e)
         {
->>>>>>> develop
 
             string headerAction = ((MenuItem)sender).Header.ToString();
             actionLabel.Content = headerAction;
@@ -121,11 +97,7 @@ namespace ChromiumWPF {
             pointStack.Visibility = Visibility.Collapsed;
             pointsStack.Visibility = Visibility.Collapsed;
             urlStack.Visibility = Visibility.Collapsed;
-<<<<<<< HEAD
-
-=======
             circleStack.Visibility = Visibility.Collapsed;
->>>>>>> develop
             urlTextblock.Visibility = Visibility.Collapsed;
             urlTextbox.Visibility = Visibility.Collapsed;
 
@@ -136,12 +108,6 @@ namespace ChromiumWPF {
             heightTextbox.Tag = "LastInStack";
             urlTextbox.Tag = "";
 
-<<<<<<< HEAD
-            switch (headerAction) {
-
-                case "Set location":
-                    action = Action.SetLocation;
-=======
             switch (headerAction)
             { // Sets action type.
 
@@ -149,18 +115,14 @@ namespace ChromiumWPF {
                     action = Action.SetLocation;
                     pointIdText.Visibility = Visibility.Collapsed;
                     pointIdTextbox.Visibility = Visibility.Collapsed;
->>>>>>> develop
                     pointStack.Visibility = Visibility.Visible;
                     break;
 
                 case "Add point":
                     action = Action.AddPoint;
-<<<<<<< HEAD
-=======
 
                     pointIdText.Visibility = Visibility.Visible;
                     pointIdTextbox.Visibility = Visibility.Visible;
->>>>>>> develop
                     pointStack.Visibility = Visibility.Visible;
                     break;
 
@@ -186,15 +148,6 @@ namespace ChromiumWPF {
                     urlTextbox.Tag = "LastInStack";
                     break;
 
-<<<<<<< HEAD
-                case "Create model":
-                    action = Action.CreateModel;
-                    pointStack.Visibility = Visibility.Visible;
-                    urlTextblock.Visibility = Visibility.Visible;
-                    urlTextbox.Visibility = Visibility.Visible;
-                    heightTextbox.Tag = "";
-                    urlTextbox.Tag = "LastInStack";
-=======
                 case "Add circle":
                     action = Action.AddCircle;
                     circleStack.Visibility = Visibility.Visible;
@@ -207,15 +160,11 @@ namespace ChromiumWPF {
                     urlTextbox.Visibility = Visibility.Visible;
                     modelheightTextbox.Tag = "";
                     ModelMenu.Tag = "LastInStack";
->>>>>>> develop
                     break;
 
                 case "Load structure model":
                     action = Action.LoadStructureModel;
-<<<<<<< HEAD
-=======
                     ModelMenu.Visibility = Visibility.Collapsed;
->>>>>>> develop
                     urlStack.Visibility = Visibility.Visible;
                     break;
 
@@ -223,12 +172,6 @@ namespace ChromiumWPF {
                     action = Action.MovePoint;
                     pointStack.Visibility = Visibility.Visible;
                     break;
-<<<<<<< HEAD
-
-                case "Clear points":
-                    JsCall($"clearPoints();");
-                    pointStack.Visibility = Visibility.Visible;
-=======
                 case "Get altitude of point":
                     action = Action.getAltitude;
                     pointStack.Visibility = Visibility.Visible;
@@ -245,22 +188,12 @@ namespace ChromiumWPF {
                 case "Import actions":
                     action = Action.ImportActions;
                     urlStack.Visibility = Visibility.Visible;
->>>>>>> develop
                     break;
 
             }
 
         }
 
-<<<<<<< HEAD
-        private void ModeSwitch(object sender, RoutedEventArgs e) {
-            JsCall($"modeSwitch();"); // Switch camera view 2D/3D.
-        }
-
-        private void Approve(object sender, RoutedEventArgs e) {
-
-            switch (action) {
-=======
         private void ModeSwitch(object sender, RoutedEventArgs e)
         {
             JsCall($"modeSwitch();"); // Switch camera view 2D/3D.
@@ -270,7 +203,6 @@ namespace ChromiumWPF {
         {
             switch (action)
             {
->>>>>>> develop
 
                 case Action.SetLocation: // Moves camera to position.
                     JsCall($"moveTo({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
@@ -283,10 +215,7 @@ namespace ChromiumWPF {
                 case Action.Addpolyline:
 
                     JsCall($"addPolyline({BuildPointsArray(polyPoints)}, {widthTextbox.Text});");
-<<<<<<< HEAD
-=======
                     JsCall($"clearPoints({BuildIdsArray(polyPoints)});");
->>>>>>> develop
                     ClearPoints();
                     polyPoints.Clear();
 
@@ -294,14 +223,9 @@ namespace ChromiumWPF {
 
                 case Action.AddPolygon:
 
-<<<<<<< HEAD
-                    string height = polygonHeightTextbox.Text == "" ? "100" : polygonHeightTextbox.Text;
-                    JsCall($"addPolygon({BuildPointsArray(polyPoints)}, {height}, {opacitySlider.Value});");
-=======
                     string height = polygonHeightTextbox.Text == "" ? "100" : polygonHeightTextbox.Text; // Default value.
                     JsCall($"addPolygon({BuildPointsArray(polyPoints)}, {height}, {opacitySlider.Value});");
                     JsCall($"clearPoints({BuildIdsArray(polyPoints)});");
->>>>>>> develop
                     ClearPoints();
                     polyPoints.Clear();
 
@@ -310,11 +234,6 @@ namespace ChromiumWPF {
                 case Action.AddImage:
                     JsCall($"addImage({longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text}, '{urlTextbox.Text}');");
                     break;
-<<<<<<< HEAD
-
-                case Action.CreateModel:
-                    JsCall($"createModel('{urlTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
-=======
                 case Action.AddCircle:
                     JsCall($"addCircle({circlelongitudeTextbox.Text}, {circlelatitudeTextbox.Text}, {circleheightTextbox.Text}, {semiMinorAxisTextbox.Text}, {semiMajorAxisTextbox.Text});");
                     break;
@@ -336,27 +255,11 @@ namespace ChromiumWPF {
                         modelurl = "./3dmodels/house.glb";
                     }
                     JsCall($"createModel('{modelurl}', {modellongitudeTextbox.Text}, {modellatitudeTextbox.Text}, {modelheightTextbox.Text});");
->>>>>>> develop
                     break;
 
                 case Action.LoadStructureModel:
                     JsCall($"loadStructureModel('{urlStackTextbox.Text}');");
                     break;
-<<<<<<< HEAD
-                
-                case Action.MovePoint:
-                    JsCall($"movePoint('{pointIdTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
-                    break;
-
-            }
-
-            // Reseting all textboxes to empty string.
-            foreach(UIElement element in actionStack.Children) {
-                if (element is StackPanel stackPanel) {
-
-                    foreach (UIElement element2 in stackPanel.Children) {
-                        if (element2 is TextBox textBox) {
-=======
 
                 case Action.MovePoint:
                     JsCall($"movePoint('{pointIdTextbox.Text}', {longitudeTextbox.Text}, {latitudeTextbox.Text}, {heightTextbox.Text});");
@@ -436,23 +339,12 @@ namespace ChromiumWPF {
                     {
                         if (element2 is TextBox textBox)
                         {
->>>>>>> develop
                             textBox.Text = "";
                         }
                     }
 
                 }
             }
-<<<<<<< HEAD
-
-        }
-
-        private void ClearPoints() {
-
-            // Clear point inputs.
-            int childCount = pointsStack.Children.Count;
-            for (int i = 0; i < points.Count() / 2; i++) {
-=======
             action = Action.None;
             actionLabel.Content = "";
             actionStack.Visibility = Visibility.Collapsed;
@@ -475,7 +367,6 @@ namespace ChromiumWPF {
             int childCount = pointsStack.Children.Count;
             for (int i = 0; i < points.Count() / 2; i++)
             {
->>>>>>> develop
                 pointsStack.Children.RemoveAt(childCount - 1 - 3 * i);
                 pointsStack.Children.RemoveAt(childCount - 2 - 3 * i);
                 pointsStack.Children.RemoveAt(childCount - 3 - 3 * i);
@@ -484,18 +375,12 @@ namespace ChromiumWPF {
 
         }
 
-<<<<<<< HEAD
-        private void AddPointInput(object sender, RoutedEventArgs e) {
-
-            TextBlock newTextBlock = new TextBlock {
-=======
         private void AddPointInput(object sender, RoutedEventArgs e)
         {
 
             // Adds point input for polyshape.
             TextBlock newTextBlock = new TextBlock
             {
->>>>>>> develop
                 Text = $"Point {points.Count / 2 + 1}",
                 FontSize = 15,
                 Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255))
@@ -508,12 +393,8 @@ namespace ChromiumWPF {
             newTextBoxY.KeyDown += NextField;
             newTextBoxY.Tag = "LastInStack";
 
-<<<<<<< HEAD
-            if (pointsStack.Children[pointsStack.Children.Count - 1] is TextBox textBox) {
-=======
             if (pointsStack.Children[pointsStack.Children.Count - 1] is TextBox textBox)
             {
->>>>>>> develop
                 textBox.Tag = "";
             }
 
@@ -526,17 +407,11 @@ namespace ChromiumWPF {
 
         }
 
-<<<<<<< HEAD
-        private void NextField(object sender, KeyEventArgs e) {
-
-            if (e.Key == Key.Enter) {
-=======
         private void NextField(object sender, KeyEventArgs e)
         {
 
             if (e.Key == Key.Enter)
             { // Focuses on next textbox if pressed enter.
->>>>>>> develop
 
                 TextBox textBox = (TextBox)sender;
                 StackPanel parent = (StackPanel)textBox.Parent;
@@ -544,23 +419,12 @@ namespace ChromiumWPF {
                 int index = parent.Children.IndexOf(textBox);
                 string tag = ((TextBox)parent.Children[index]).Tag?.ToString();
 
-<<<<<<< HEAD
-                if (tag == "LastInStack") {
-=======
                 if (tag == "LastInStack")
                 { // If last input, approve automatically.
->>>>>>> develop
                     Approve(null, null);
                     return;
                 }
 
-<<<<<<< HEAD
-                try {
-                    index += parent.Children[index + 1] is TextBox ? 1 : 2;
-                    parent.Children[index].Focus();
-                } catch { }
-                
-=======
                 try
                 {
                     index += parent.Children[index + 1] is TextBox ? 1 : 2; // Find next textbox to focus on.
@@ -568,17 +432,12 @@ namespace ChromiumWPF {
                 }
                 catch { /* Out of range! */ }
 
->>>>>>> develop
             }
 
         }
 
-<<<<<<< HEAD
-        private void CesiumClick(object sender, MouseButtonEventArgs e) {
-=======
         private void CesiumClick(object sender, MouseButtonEventArgs e)
         {
->>>>>>> develop
 
             if (action != Action.AddPoint
              && action != Action.Addpolyline
@@ -588,16 +447,6 @@ namespace ChromiumWPF {
             var frame = defaultBrowser.GetMainFrame();
             var task = frame.EvaluateScriptAsync("addPointByClick()", null);
 
-<<<<<<< HEAD
-            task.ContinueWith(t => {
-                if (!t.IsFaulted) {
-
-                    var response = t.Result;
-                    string EvaluateJavaScriptResult = response.Result?.ToString();
-
-                    if (EvaluateJavaScriptResult == null) return;
-                    if (action != Action.AddPoint) {
-=======
             // Gets value retured from function.
             task.ContinueWith(t =>
             {
@@ -611,7 +460,6 @@ namespace ChromiumWPF {
                     if (EvaluateJavaScriptResult == null) return;
                     if (action != Action.AddPoint)
                     {
->>>>>>> develop
                         if (action == Action.AddPolygon & e.ClickCount == 2)
                         {
                             Console.WriteLine(EvaluateJavaScriptResult);
@@ -624,15 +472,6 @@ namespace ChromiumWPF {
 
         }
 
-<<<<<<< HEAD
-        private string BuildPointsArray(List<JObject> points) {
-
-            // Builds array of points, format: [x, y, x, y, x, y, ...].
-            string pointArray = "[";
-            polyPoints.ForEach(point => {
-                pointArray += point["position"]["longitude"] + ",";
-                pointArray += point["position"]["latitude"] + (point == polyPoints.Last() ? "]" : ",");
-=======
         private string BuildPointsArray(List<JObject> points)
         {
 
@@ -642,15 +481,12 @@ namespace ChromiumWPF {
             {
                 pointArray += point["position"]["longitude"] + ",";
                 pointArray += point["position"]["latitude"] + (point == points.Last() ? "]" : ",");
->>>>>>> develop
             });
 
             return pointArray;
 
         }
 
-<<<<<<< HEAD
-=======
         private string BuildIdsArray(List<JObject> points)
         {
 
@@ -710,6 +546,5 @@ namespace ChromiumWPF {
             });
             return true;
         }
->>>>>>> develop
     }
 }
