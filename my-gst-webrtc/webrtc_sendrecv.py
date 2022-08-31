@@ -1,11 +1,13 @@
 import random
 import ssl
+from time import sleep
 import websockets
 import asyncio
 import os
 import sys
 import json
 import argparse
+import multiprocessing
 
 import gi
 gi.require_version('Gst', '1.0')
@@ -17,7 +19,7 @@ from gi.repository import GstSdp
 
 PIPELINE_DESC = '''
 webrtcbin name=sendrecv bundle-policy=max-bundle stun-server=stun://stun.l.google.com:19302
- videotestsrc is-live=true pattern=ball ! videoconvert ! queue ! vp8enc deadline=1 ! rtpvp8pay !
+ videotestsrc is-live=true pattern=PATTERN ! videoconvert ! queue ! vp8enc deadline=1 ! rtpvp8pay !
  queue ! application/x-rtp,media=video,encoding-name=VP8,payload=97 ! sendrecv.
  audiotestsrc is-live=true wave=red-noise ! audioconvert ! audioresample ! queue ! opusenc ! rtpopuspay !
  queue ! application/x-rtp,media=audio,encoding-name=OPUS,payload=96 ! sendrecv.
@@ -26,19 +28,23 @@ webrtcbin name=sendrecv bundle-policy=max-bundle stun-server=stun://stun.l.googl
 from websockets.version import version as wsv
 
 class WebRTCClient:
-    def __init__(self, id_, peer_id, server):
-        self.id_ = id_
+    def __init__(self, pattern, peer_id, server):
+	    #videotestsrc pattern to stream. (can be word e.g "snow" or number).
+        self.pattern = pattern
         self.conn = None
         self.pipe = None
         self.webrtc = None
         self.peer_id = peer_id
         self.server = server or 'wss://webrtc.nirbheek.in:8443'
+	
 
+        global PIPELINE_DESC 
+        PIPELINE_DESC = PIPELINE_DESC.replace("pattern=PATTERN", "pattern=" + pattern)
 
     async def connect(self):
         sslctx = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
         self.conn = await websockets.connect(self.server, ssl=sslctx)
-        await self.conn.send('HELLO %d' % self.id_)
+        await self.conn.send('HELLO')
 
     async def setup_call(self):
         await self.conn.send('SESSION {}'.format(self.peer_id))
@@ -145,8 +151,11 @@ class WebRTCClient:
 
     async def loop(self):
         assert self.conn
-        async for message in self.conn:
-            if message == 'HELLO':
+        async for message in self.conn:	
+	    #signalling server gives this peer an id.
+            if 'HELLO' in message:
+                hello, uid = message.split(maxsplit=1)
+                self.id = uid
                 await self.setup_call()
             elif message == 'SESSION_OK':
                 self.start_pipeline()
@@ -175,17 +184,29 @@ def check_plugins():
     return True
 
 
+#target function for the processes.
+def stream(i, server):
+    c = WebRTCClient(i, i, server)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(c.connect())
+    res = loop.run_until_complete(c.loop())
+    sys.exit(res)
+
+
 if __name__=='__main__':
     Gst.init(None)
     if not check_plugins():
         sys.exit(1)
     parser = argparse.ArgumentParser()
-    parser.add_argument('peerid', help='String ID of the peer to connect to')
     parser.add_argument('--server', help='Signalling server to connect to, eg "wss://127.0.0.1:8443"')
     args = parser.parse_args()
-    our_id = random.randrange(10, 10000)
-    c = WebRTCClient(our_id, args.peerid, args.server)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(c.connect())
-    res = loop.run_until_complete(c.loop())
-    sys.exit(res)
+	
+    #creating 10 processes that will stream to chromium in WPF.
+    processes = []
+    for i in range(10):
+        processes.append(multiprocessing.Process(target=stream, args = (str(i+1), args.server)))
+        processes[i].start()
+        sleep(0.25)
+    
+    for i in range(10):
+        processes[i].join()

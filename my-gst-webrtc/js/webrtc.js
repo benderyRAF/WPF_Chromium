@@ -8,7 +8,7 @@
  */
 
 // Set this to override the automatic detection in websocketServerConnect()
-var ws_server;
+var ws_server = "192.168.136.144";
 var ws_port;
 // Set this to use a specific peer id instead of a random one
 var default_peer_id;
@@ -135,10 +135,18 @@ function onIncomingICE(ice) {
 
 function onServerMessage(event) {
     console.log("Received " + event.data);
+	
+	//get peer id from signalling server, and show it.
+	if (event.data.startsWith("HELLO"))
+	{
+		const data = event.data.split(" ");
+		const hard_coded_id = data[1];
+		setStatus("Registered with server, waiting for call");
+		document.getElementById("peer-id").textContent = hard_coded_id;
+        return;
+	}
+	
     switch (event.data) {
-        case "HELLO":
-            setStatus("Registered with server, waiting for call");
-            return;
         case "SESSION_OK":
             setStatus("Starting negotiation");
             if (wantRemoteOfferer()) {
@@ -239,10 +247,10 @@ function websocketServerConnect() {
     if (textarea.value == '')
         textarea.value = JSON.stringify(default_constraints);
     // Fetch the peer id to use
-    peer_id = default_peer_id || getOurId();
+    //peer_id = default_peer_id || getOurId();
     ws_port = ws_port || '8443';
     if (window.location.protocol.startsWith ("file")) {
-        ws_server = ws_server || "192.168.136.138";
+        ws_server = ws_server || "127.0.0.1";
     } else if (window.location.protocol.startsWith ("http")) {
         ws_server = ws_server || window.location.hostname;
     } else {
@@ -252,9 +260,10 @@ function websocketServerConnect() {
     setStatus("Connecting to server " + ws_url);
     ws_conn = new WebSocket(ws_url);
     /* When connected, immediately register with the server */
-    ws_conn.addEventListener('open', (event) => {
-        document.getElementById("peer-id").textContent = peer_id;
-        ws_conn.send('HELLO ' + peer_id);
+    ws_conn.addEventListener('open', (event) => {	
+	
+		//sending signalling server "HELLO" and wait for id.
+        ws_conn.send('HELLO');
         setStatus("Registering with server");
         setConnectButtonState("Connect");
     });

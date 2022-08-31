@@ -52,6 +52,9 @@ class WebRTCSimpleServer(object):
         # Certificate mtime, used to detect when to restart the server
         self.cert_mtime = -1
 
+	    #signalling server gives peers their id - easier to handle the peers this way.
+        self.hard_coded_id = 0
+
     ############### Helper functions ###############
 
     async def health_check(self, path, request_headers):
@@ -210,20 +213,25 @@ class WebRTCSimpleServer(object):
                 print('Ignoring unknown message {!r} from {!r}'.format(msg, uid))
 
     async def hello_peer(self, ws):
+	#increasing the hard coded id 
+        self.hard_coded_id += 1
+
         '''
         Exchange hello, register peer
         '''
         raddr = ws.remote_address
         hello = await ws.recv()
-        hello, uid = hello.split(maxsplit=1)
+        uid = str(self.hard_coded_id)
+
         if hello != 'HELLO':
             await ws.close(code=1002, reason='invalid protocol')
             raise Exception("Invalid hello from {!r}".format(raddr))
         if not uid or uid in self.peers or uid.split() != [uid]: # no whitespace
             await ws.close(code=1002, reason='invalid peer uid')
             raise Exception("Invalid uid {!r} from {!r}".format(uid, raddr))
-        # Send back a HELLO
-        await ws.send('HELLO')
+        
+        #Send back a HELLO + user id     
+        await ws.send('HELLO ' + uid)
         return uid
 
     def get_ssl_certs(self):

@@ -45,11 +45,11 @@ namespace ChromiumWPF {
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             dispatcherTimer.Start();
 
-
-           
+            
             signallingServerUrl = (string)this.Resources["signallingServerUrl"];
             this.browser00.RequestHandler = new ExampleRequestHandler(signallingServerUrl);
         }
+
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             var frame = defaultBrowser.GetMainFrame();
