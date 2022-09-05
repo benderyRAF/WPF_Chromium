@@ -48,7 +48,12 @@ namespace ChromiumWPF {
             
             signallingServerUrl = (string)this.Resources["signallingServerUrl"];
             this.browser00.RequestHandler = new ExampleRequestHandler(signallingServerUrl);
+            
+
+            
         }
+
+
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {

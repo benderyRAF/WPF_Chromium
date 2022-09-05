@@ -14,8 +14,8 @@
         variable "signallingServerUrl" has to be https to accept self-signed certificate
         change values if needed-->
     <Window.Resources>
-        <System:String x:Key="peerHtmlPath">file:///C:/msys64/home/ITAMARBI/WPF_Chromium/my-gst-webrtc/js/index.html</System:String>
-        <System:String x:Key="signallingServerUrl">https://192.168.136.144:8443/</System:String>
+        <System:String x:Key="layoutHtmlPath">file:///C:/msys64/home/ITAMARBI/WPF_Chromium/my-gst-webrtc/js/layout.html</System:String>
+        <System:String x:Key="signallingServerUrl">https://192.168.136.148:8443/</System:String>
     </Window.Resources>
 
 
@@ -26,8 +26,8 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="3.36*" />
+            <ColumnDefinition Width="4.64*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
@@ -137,50 +137,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="0*" />     <!-- invisible row for browser00-->
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-
             <!-- browser00 is used to accept self-signed certificate of signalling server-->
-            <Grid Grid.Row="0" Grid.Column="0">
+            <Grid Grid.Row="0" >
                 <cefSharp:ChromiumWebBrowser Name="browser00" Visibility="Hidden" Address="{StaticResource signallingServerUrl}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser10" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="1" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser11" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser20" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser21" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="3" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser30" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="3" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser31" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="4" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser40" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="4" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser41" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="5" Grid.Column="0">
-                <cefSharp:ChromiumWebBrowser Name="browser50" Address="{StaticResource peerHtmlPath}"/>
-            </Grid>
-            <Grid Grid.Row="5" Grid.Column="1">
-                <cefSharp:ChromiumWebBrowser Name="browser51" Address="{StaticResource peerHtmlPath}"/>
+            <Grid Grid.Row="1">
+                <cefSharp:ChromiumWebBrowser Name="browser10" Address="{StaticResource layoutHtmlPath}"/>
             </Grid>
         </Grid>
     </Grid>
