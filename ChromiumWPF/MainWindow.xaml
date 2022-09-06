@@ -15,7 +15,7 @@
         change values if needed-->
     <Window.Resources>
         <System:String x:Key="layoutHtmlPath">file:///C:/msys64/home/ITAMARBI/WPF_Chromium/my-gst-webrtc/js/layout.html</System:String>
-        <System:String x:Key="signallingServerUrl">https://192.168.136.148:8443/</System:String>
+        <System:String x:Key="signallingServerUrl">https://192.168.136.151:8443/</System:String>
     </Window.Resources>
 
 
@@ -26,8 +26,8 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3.36*" />
-            <ColumnDefinition Width="4.64*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
