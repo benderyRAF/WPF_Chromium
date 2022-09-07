@@ -34,7 +34,8 @@ namespace ChromiumWPF {
         private Action action = Action.None;
         private readonly List<TextBox> points = new List<TextBox>();
         private readonly List<JObject> polyPoints = new List<JObject>();
-
+        private GridLength small_camera = new GridLength(3, GridUnitType.Star);
+        private GridLength big_camera = new GridLength(100, GridUnitType.Star);
         private static string signallingServerUrl;
 
         public MainWindow()
@@ -510,6 +511,17 @@ namespace ChromiumWPF {
         {
             defaultBrowser.Reload();
             savedCommands = "";
+        }
+        private void CameraSwitch(object sender, RoutedEventArgs e)
+        {
+            if (CameraGridDef.Width == big_camera)
+            {
+                CameraGridDef.Width = small_camera;
+            }
+            else
+            {
+                CameraGridDef.Width = big_camera;
+            }
         }
     }
 

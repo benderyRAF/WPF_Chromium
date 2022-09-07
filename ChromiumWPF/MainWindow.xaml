@@ -14,7 +14,7 @@
         variable "signallingServerUrl" has to be https to accept self-signed certificate
         change values if needed-->
     <Window.Resources>
-        <System:String x:Key="layoutHtmlPath">file:///C:/msys64/home/ITAMARBI/WPF_Chromium/my-gst-webrtc/js/layout.html</System:String>
+        <System:String x:Key="layoutHtmlPath">file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/layout.html</System:String>
         <System:String x:Key="signallingServerUrl">https://192.168.136.151:8443/</System:String>
     </Window.Resources>
 
@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
+            <ColumnDefinition x:Name="CameraGridDef" Width="3*" />
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
@@ -50,12 +50,18 @@
                 </MenuItem>
                 <MenuItem Header="Mode switch" Width="100" Height="30" Background="Gray" Click="ModeSwitch"/>
             </Menu>
+            <Button Height="40" Background="Gray" Click="CameraSwitch" Margin="239,5,-97,5.4" Width="93" HorizontalAlignment="Center" HorizontalContentAlignment="Left">
+                <TextBlock Text="Camera Switch"></TextBlock>
+            </Button>
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
-            <Button Width="40" Height="40" Margin="10, 0, 0, 0"  Click="Refresh">
+            
+            <Button Width="40" Height="40" Margin="250, 0, 0, 0"  Click="Refresh">
                 <Image Source="Images/Refresh.png"/>
             </Button>
+            
+
         </Grid>
         <Grid Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left">
             <TextBlock x:Name="altTextBlock" FontSize="22" Text="Altitude: 9999" Foreground="White" VerticalAlignment="Center" Height="30" Margin="0,10,-24.8,10.4" HorizontalAlignment="Center"/>
@@ -135,7 +141,8 @@
         <Grid Grid.Row="1" Grid.Column="0" Background="White">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="0*" />     <!-- invisible row for browser00-->
+                <RowDefinition Height="0*" />
+                <!-- invisible row for browser00-->
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
