@@ -49,10 +49,9 @@
                     <MenuItem Header="Import actions" Click="ChooseAction"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Mode switch" Width="100" Height="30" Background="Gray" Click="ModeSwitch"/>
+                <MenuItem Header="Camera switch" Width="100" Height="30" Background="Gray" Click="CameraSwitch"/>
             </Menu>
-            <Button Height="40" Background="Gray" Click="CameraSwitch" Margin="239,5,-97,5.4" Width="93" HorizontalAlignment="Center" HorizontalContentAlignment="Left">
-                <TextBlock Text="Camera Switch"></TextBlock>
-            </Button>
+            
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
