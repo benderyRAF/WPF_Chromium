@@ -14,8 +14,8 @@
         variable "signallingServerUrl" has to be https to accept self-signed certificate
         change values if needed-->
     <Window.Resources>
-        <System:String x:Key="layoutHtmlPath">file:///C:/Users/bendery/Desktop/WPF_Chromium/my-gst-webrtc/js/layout.html</System:String>
-        <System:String x:Key="signallingServerUrl">https://192.168.136.151:8443/</System:String>
+        <System:String x:Key="layoutHtmlPath">file://C://msys64//home//ITAMARBI//WPF_Chromium//my-gst-webrtc//js//layout.html</System:String>
+        <System:String x:Key="signallingServerUrl">https://192.168.136.152:8443/</System:String>
     </Window.Resources>
 
 

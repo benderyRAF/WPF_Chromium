@@ -8,7 +8,7 @@
  */
 
 // Set this to override the automatic detection in websocketServerConnect()
-var ws_server = "192.168.136.151";
+var ws_server = "192.168.136.152";
 var ws_port;
 // Set this to use a specific peer id instead of a random one
 var default_peer_id;
