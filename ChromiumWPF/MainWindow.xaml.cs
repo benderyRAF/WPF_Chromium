@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using CefSharp.Handler;
 using System.Threading;
+using System.Configuration;
 
 namespace ChromiumWPF {
     /// <summary>
@@ -45,13 +46,10 @@ namespace ChromiumWPF {
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             dispatcherTimer.Start();
-
-            
-            signallingServerUrl = (string)this.Resources["signallingServerUrl"];
-            this.browser00.RequestHandler = new ExampleRequestHandler(signallingServerUrl);
-            
-
-            
+            this.browser00.Address = (string)ConfigurationManager.AppSettings["signallingServerUrl"].ToString();
+            this.browser10.Address = (string)ConfigurationManager.AppSettings["layoutHtmlPath"].ToString();
+            signallingServerUrl = (string)ConfigurationManager.AppSettings["signallingServerUrl"].ToString();
+            this.browser00.RequestHandler = new ExampleRequestHandler(signallingServerUrl); 
         }
 
 
