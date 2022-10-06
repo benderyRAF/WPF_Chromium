@@ -46,12 +46,13 @@ WebRTC works with a signalling server and peers:
 First, run my-gts-webrtc/signalling/generate_cert.sh . this script will generate a self-signed certificate for the signalling server.
 Then run my-gts-webrtc/signalling/simple_server.py. This is the signalling server which establishes a connection between the peers.
 every instance of my-gts-webrtc/js/index.html is a peer.
-and my-gts-webrtc/webrtc-sendrecv.py is the second peer.
+and my-gts-webrtc/webrtc-sendrecv.py will create the other peers.
 
 After running the WPF project in visual studio, ensure that the status of each html is "Registered with server, waiting for call", and note the id.
-Then run my-gts-webrtc/webrtc-sendrecv.py with the address of the signalling server and the id, for example: `python3 webrtc-sendrecv.py --server wss://localhost:8443 YOUR-ID`
+Then run my-gts-webrtc/webrtc-sendrecv.py with the address of the signalling server, for example: `python3 webrtc-sendrecv.py --server wss://localhost:8443`
+this script will create 10 connection with differenct gstreamer samples. 
 
-Note that you can use the demo page: https://webrtc.nirbheek.in/ for which you don't need a signalling server. in that case, run the script like that:
+Note that you can use the demo page: https://webrtc.nirbheek.in/ for which you don't need a signalling server. in that case, use the original 'webrtc-sendrecv.py' from https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/master/webrtc/sendrecv/gst. and run it like that:
 `python3 webrtc-sendrecv.py YOUR-ID`. You can change path to index.html and url of signalling server in MainWindow.xaml under Window.Resources tag.
 
 Also Note that when running my-gts-webrtc/webrtc-sendrecv.py, signalling server must be accessed with WSS protocol.
