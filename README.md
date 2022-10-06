@@ -37,6 +37,8 @@ or by enabaling CORS (more complicated and might be dangerous)
 Run the WPF project in Visual studio
 
 ## GST-WebRTC setup
+Read Gstreamer-WebRTC.pptx for deeper explanations.
+
 In order for this part of the project to run, you have to download Gstreamer plugins and GStreamer WebRTC implementation.
 Here are the commands for Ubuntu 18.04 : `sudo apt-get install -y gstreamer1.0-tools gstreamer1.0-nice gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-plugins-good libgstreamer1.0-dev git libglib2.0-dev libgstreamer-plugins-bad1.0-dev libsoup2.4-dev libjson-glib-dev`
 
