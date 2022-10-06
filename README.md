@@ -52,10 +52,10 @@ After running the WPF project in visual studio, ensure that the status of each h
 Then run my-gts-webrtc/webrtc-sendrecv.py with the address of the signalling server, for example: `python3 webrtc-sendrecv.py --server wss://localhost:8443`
 this script will create 10 connection with differenct gstreamer samples. 
 
-Note that you can use the demo page: https://webrtc.nirbheek.in/ for which you don't need a signalling server. in that case, use the original 'webrtc-sendrecv.py' from https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/master/webrtc/sendrecv/gst. and run it like that:
+Note that you can use the demo page: https://webrtc.nirbheek.in/ for which you don't need a signalling server. in that case, use the original `webrtc-sendrecv.py` from https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/master/webrtc/sendrecv/gst. and run it like that:
 `python3 webrtc-sendrecv.py YOUR-ID`. You can change path to index.html and url of signalling server in MainWindow.xaml under Window.Resources tag.
 
 Also Note that when running my-gts-webrtc/webrtc-sendrecv.py, signalling server must be accessed with WSS protocol.
 
-For further reading and help, visit : https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/master/webrtc. scripts under my-gts-webrtc/ was taken from that repo. 
+For further reading and help, visit : https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/master/webrtc. scripts under my-gts-webrtc/ were taken from that repo. 
 And also gstreamer documentation: https://gstreamer.freedesktop.org/documentation/tutorials/index.html?gi-language=c
